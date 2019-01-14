@@ -1,0 +1,44 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\PuTTY\;C:\WINDOWS\System32\OpenSSH\;C:\Users\rmorquecho\AppData\Local\Programs\Python\Python37\Scripts\;C:\Users\rmorquecho\AppData\Local\Programs\Python\Python37\;C:\Users\rmorquecho\AppData\Local\Microsoft\WindowsApps;C:\Users\rmorquecho\AppData\Roaming\npm;C:\Users\rmorquecho\AppData\Local\Yarn\bin;
+
+Yarn version: 
+  1.10.1
+
+Node version: 
+  8.12.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: self signed certificate in certificate chain
+      at TLSSocket.<anonymous> (_tls_wrap.js:1116:38)
+      at emitNone (events.js:106:13)
+      at TLSSocket.emit (events.js:208:7)
+      at TLSSocket._finishInit (_tls_wrap.js:643:8)
+      at TLSWrap.ssl.onhandshakedone (_tls_wrap.js:473:38)
+
+npm manifest: 
+  {
+    "name": "pdn-backend",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+      "start": "node ./bin/www"
+    },
+    "dependencies": {
+      "cookie-parser": "~1.4.3",
+      "debug": "~2.6.9",
+      "express": "~4.16.0",
+      "morgan": "~1.9.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
