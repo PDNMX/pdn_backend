@@ -10,8 +10,7 @@ router.post('/uploadOficio',cors(), (req, res) => {
     file.mv(`./solicitudes/${file.name}`, err => {
         if (err) return res.status(500).send({status:'ERROR',message: err});
         res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" +
-            "");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         return res.status(200).send({status: 'OK', idDocument:uuidSolcitud, nameDocument:file.name})
     })
 });
