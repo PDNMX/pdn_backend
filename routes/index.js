@@ -1,14 +1,14 @@
 const express = require('express');
 const uuidv1 = require('uuid/v1');
-
+var cors = require('cors')
 
 var router = express.Router();
 
-router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'});
-});
+var corsOptions={
+    origin:false
+}
 
-router.post('/uploadOficio', (req, res) => {
+router.post('/uploadOficio',cors(corsOptions), (req, res) => {
     let uuidSolcitud = uuidv1();
     let file = req.files.file;
     file.name=uuidSolcitud+'.pdf';
