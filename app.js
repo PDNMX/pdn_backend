@@ -1,16 +1,14 @@
 var express = require('express');
-var fileUpload = require('express-fileupload');
-var cors = require('cors');
-var bodyParser = requiere('body-parser');
-
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
+var bodyParser = requiere('body-parser');
+var fileUpload = require('express-fileupload');
 
 var indexRouter = require('./routes/index');
 
 var app = express();
-
 var corsOptions={
     origin:false
 }
@@ -22,6 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json({limit:'50mb'}));
 app.use(bodyParser.urlencoded({limit:'50mb', extended: true}));
+
+
 app.use(fileUpload());
 app.use('/', indexRouter);
 
