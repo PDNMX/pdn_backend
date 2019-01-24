@@ -18,7 +18,5 @@ router.post('/uploadOficio',cors(corsOptions), (req, res) => {
     })
 });
 
-router.listen(3000,function(){
-    console.log("App running on port 3000");
-});
+
 module.exports = router;
