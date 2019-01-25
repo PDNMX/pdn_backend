@@ -5,7 +5,7 @@ var cors = require('cors');
 
 router.post('/uploadOficio',cors(), (req, res) => {
     let uuidSolcitud = uuidv1();
-    let file = req.file;
+    let file = req.files.file;
     file.name=uuidSolcitud+'.pdf';
     file.mv(`./solicitudes/${file.name}`, err => {
         if (err) return res.status(500).send({status:'ERROR',message: err});
