@@ -20,8 +20,10 @@ router.post('/deleteOficio',cors(),(req,res)=>{
     let id = req.body.idDocument;
     fs.exists(`./solicitudes/${id}`, function(exist){
         if(exist){
-            fs.unlink(`./solicitudes/${id}`);
-            return res.status(200).send({status:'OK',mensaje:'Oficio '+ id + ' eliminado correctamente'})
+            fs.unlink(`./solicitudes/${id}`,(err)=>{
+                if(err) throw err;
+                return res.status(200).send({status:'OK',mensaje:'Oficio '+ id + ' eliminado correctamente'})
+            });
         }else{
             return res.status(400).send({status:'ERROR',mensaje:'El Oficio '+ id + ' no se encuentra en el repositorio'})
         }
