@@ -29,4 +29,24 @@ router.post('/deleteOficio',cors(),(req,res)=>{
         }
     })
 });
+
+router.post('/getOficio',cors(),(req,res)=>{
+   let name= req.body.idDocument+'.pdf';
+   fs.exists(`./solicitudes/${name}`, function(exist){
+      if(exist) {
+        fs.readFile(`./solicitudes/${name}`,function(err,data){
+            res.writeHead(200, {'Content-Type':'application/pdf'});
+            res.write(data);
+            return res.end();
+        })
+      }else{
+          return res.status(400).send({status:'ERROR',mensaje:'El Oficio '+ name + ' no se encuentra en el repositorio'})
+      }
+   });
+});
+
+router.get('/test',cors(),(req,res)=>{
+    console.log("ok");
+    return res.status(200).send({msj:'ok'});
+});
 module.exports = router;
