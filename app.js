@@ -59,9 +59,10 @@ rollThreeDice: [Int]
 
 const typeDefs = gql`
 type Query {
-    sancionados(args : ParamsInput ): [Sancionado]
+    servidores_sancionados(args : ParamsServidorSancionado ): [Servidor_Sancionado],
+    particulares_sancionados(args : ParamsParticularSancionado) : [Particular_Sancionado]
   },
-  type Sancionado {
+  type Servidor_Sancionado {
     expediente :  String
     fecha_resolucion : String
     servidor_publico : String
@@ -74,8 +75,29 @@ type Query {
     causa : String
   }
   
-  input ParamsInput{
+  type Particular_Sancionado{
+    proveedor_o_contratista : String
+    dependencia : String
+    numero_de_expediente : String
+    hechos_de_la_irregularidad : String
+    objeto_social : String
+    sentido_de_resolucion :  String
+    fecha_de_notificacion : String
+    fecha_de_resolucion : String
+    plazo : String
+    monto : String
+    nombre_del_responsable_de_la_informacion : String
+      
+  }
+  
+  input ParamsServidorSancionado{
     servidor_publico : String
+    dependencia : String
+    limit : Int
+    offset : Int
+  }
+  input ParamsParticularSancionado{
+    proveedor_o_contratista : String
     dependencia : String
     limit : Int
     offset : Int
@@ -85,9 +107,16 @@ type Query {
 ;
 
 
-var getSancionados = function(args){
+var getServidoresSancionados = function(args){
     return     rp({
         uri :'https://plataformadigitalnacional.org/api/rsps',
+        json: true,
+        qs : args.args
+    }).then((data) => data)
+};
+var getParticularesSancionados = function(args){
+    return     rp({
+        uri :'https://plataformadigitalnacional.org/api/proveedores_sancionados',
         json: true,
         qs : args.args
     }).then((data) => data)
@@ -95,8 +124,11 @@ var getSancionados = function(args){
 
 const resolvers = {
     Query: {
-        sancionados (_, args) {
-            return  getSancionados(args);
+        servidores_sancionados (_, args) {
+            return  getServidoresSancionados(args);
+        },
+        particulares_sancionados(_,args){
+            return getParticularesSancionados(args);
         }
     },
 };
