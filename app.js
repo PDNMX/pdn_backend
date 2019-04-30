@@ -3,6 +3,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+const {ApolloServer, gql} = require('apollo-server-express');
+const {GraphQLInputObjectType, GraphQLNonNull , GraphQLInt,GraphQLObjectType} = require('graphql');
+var rp = require('request-promise');
+
+
 
 const graphqlHTTP = require('express-graphql');
 const { buildSchema } = require('graphql');
@@ -42,6 +47,7 @@ app.use('/', indexRouter);
 
 
 // GraphQL
+/*
 let schema = buildSchema(`
 type Query {
 quoteOfTheDay: String, 
@@ -49,7 +55,58 @@ random: Float!,
 rollThreeDice: [Int]
 }
 `);
+*/
 
+const typeDefs = gql`
+type Query {
+    sancionados(args : ParamsInput ): [Sancionado]
+  },
+  type Sancionado {
+    expediente :  String
+    fecha_resolucion : String
+    servidor_publico : String
+    autoridad : String
+    dependencia : String
+    sancion_impuesta : String
+    inicio : String
+    fin : String
+    monto : Float
+    causa : String
+  }
+  
+  input ParamsInput{
+    servidor_publico : String
+    dependencia : String
+    limit : Int
+    offset : Int
+  }
+  
+  `
+;
+
+
+var getSancionados = function(args){
+    return     rp({
+        uri :'https://plataformadigitalnacional.org/api/rsps',
+        json: true,
+        qs : args.args
+    }).then((data) => data)
+};
+
+const resolvers = {
+    Query: {
+        sancionados (_, args) {
+            return  getSancionados(args);
+        }
+    },
+};
+
+const server = new ApolloServer({typeDefs, resolvers});
+server.applyMiddleware({app});
+app.listen({ port: 3200 }, () =>
+    console.log(`🚀 Server ready at http://host:3200${server.graphqlPath}`)
+);
+/*
 let root =  {
     quoteOfTheDay: () => Math.random() < 0.5? 'Test 1': 'Test 2',
     random: () => Math.random(),
@@ -62,4 +119,5 @@ app.use('/graphql', graphqlHTTP({
     rootValue: root
 }));
 
+*/
 module.exports = app;
