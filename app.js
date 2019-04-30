@@ -3,6 +3,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
+
 /*
 var bodyParser = requiere('body-parser');
 */
@@ -35,5 +39,27 @@ app.use(function(req, res, next) {
 
 app.use(fileUpload());
 app.use('/', indexRouter);
+
+
+// GraphQL
+let schema = buildSchema(`
+type Query {
+quoteOfTheDay: String, 
+random: Float!, 
+rollThreeDice: [Int]
+}
+`);
+
+let root =  {
+    quoteOfTheDay: () => Math.random() < 0.5? 'Test 1': 'Test 2',
+    random: () => Math.random(),
+    rollTreeDice: () => [1,2,3].map(_ => 1 + Math.floor(Math.random() * 6))
+};
+
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    graphiql: true,
+    rootValue: root
+}));
 
 module.exports = app;
