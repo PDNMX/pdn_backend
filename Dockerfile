@@ -9,6 +9,6 @@ RUN yarn add global yarn \
 && yarn install \
 && yarn cache clean
 
-EXPOSE 3000
+EXPOSE 3000 3200
 
 CMD ["yarn", "start"]
