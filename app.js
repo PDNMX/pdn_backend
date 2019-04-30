@@ -103,7 +103,7 @@ const resolvers = {
 
 const server = new ApolloServer({typeDefs, resolvers});
 server.applyMiddleware({app});
-app.listen({ port: 3000 }, () =>
+app.listen({ port: 3200 }, () =>
     console.log(`🚀 Server ready at http://host:3200${server.graphqlPath}`)
 );
 /*
