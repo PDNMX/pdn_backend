@@ -59,9 +59,18 @@ rollThreeDice: [Int]
 
 const typeDefs = gql`
 type Query {
-    servidores_sancionados(args : ParamsServidorSancionado ): [Servidor_Sancionado],
-    particulares_sancionados(args : ParamsParticularSancionado) : [Particular_Sancionado]
+    servidores_sancionados(args : ParamsServidorSancionado ): ResponseServidoresSancionados,
+    particulares_sancionados(args : ParamsParticularSancionado) : ResponseParticularesSancionados
   },
+  type ResponseServidoresSancionados {
+    totalRows : Int
+    rows : [Servidor_Sancionado]
+  }
+  type ResponseParticularesSancionados {
+    totalRows : Int
+    rows : [Particular_Sancionado]
+  }
+  
   type Servidor_Sancionado {
     expediente :  String
     fecha_resolucion : String
@@ -108,18 +117,44 @@ type Query {
 
 
 var getServidoresSancionados = function(args){
-    return     rp({
+    let aux =     rp({
         uri :'https://plataformadigitalnacional.org/api/rsps',
         json: true,
         qs : args.args
-    }).then((data) => data)
+    }).then((data) => data);
+
+    let total =  rp({
+        uri :'https://plataformadigitalnacional.org/api/rsps?select=count=eq.exact',
+        json: true,
+        qs : args.args
+    }).then((data) => {
+        return data[0].count;
+    });
+
+    return {
+        totalRows : total,
+        rows : aux
+    }
 };
 var getParticularesSancionados = function(args){
-    return     rp({
+   let aux = rp({
         uri :'https://plataformadigitalnacional.org/api/proveedores_sancionados',
         json: true,
         qs : args.args
-    }).then((data) => data)
+    }).then((data) => data);
+
+    let total =  rp({
+        uri :'https://plataformadigitalnacional.org/api/proveedores_sancionados?select=count=eq.exact',
+        json: true,
+        qs : args.args
+    }).then((data) => {
+        return data[0].count;
+    });
+
+    return {
+        totalRows : total,
+        rows : aux
+    }
 };
 
 const resolvers = {
