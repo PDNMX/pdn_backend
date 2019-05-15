@@ -5,6 +5,7 @@ import {gql} from "apollo-boost";
 import {InMemoryCache} from "apollo-cache-inmemory";
 
 var router = express.Router();
+var cors = require('cors');
 
 const client = new ApolloClient({
     uri: "https://dgti-ees-servidores-publicos-Sancionados-api-master.200.34.175.120.nip.io/?token=secreto",
@@ -68,7 +69,7 @@ let getTotal = (params) => {
 
 };
 
-router.post('/getServidoresSancionados', (req, response) => {
+router.post('/getServidoresSancionados',cors(), (req, response) => {
     client
         .query({
             variables:
