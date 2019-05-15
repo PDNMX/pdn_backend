@@ -118,7 +118,7 @@ router.post('/getParticularesSancionados', (req, response) => {
                 });
                 return response.status(200).send(
                     {
-                        "totalRows: ": total,
+                        "totalRows": total,
                         "data": dataAux
                     });
             });

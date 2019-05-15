@@ -114,7 +114,7 @@ router.post('/getServidoresSancionados', (req, response) => {
                 });
                 return response.status(200).send(
                     {
-                        "totalRows: ": total,
+                        "totalRows": total,
                         "data": dataAux
                     });
             });
