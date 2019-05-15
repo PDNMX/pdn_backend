@@ -3,22 +3,32 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./start.js"
   },
   "dependencies": {
+    "apollo-boost": "^0.3.1",
+    "apollo-cache-inmemory": "^1.5.1",
     "apollo-server": "^2.4.8",
     "apollo-server-express": "^2.4.8",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
+    "cross-fetch": "^3.0.2",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-fileupload": "^1.1.1-alpha.1",
     "express-graphql": "^0.8.0",
-    "graphql": "^14.2.1",
+    "graphql": "^14.3.0",
     "morgan": "~1.9.0",
+    "node-fetch": "^2.5.0",
+    "react-apollo": "^2.5.5",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4"
   }
 }
