@@ -23,15 +23,31 @@ let createData = (item) => {
         nombre: item.nombres ? item.nombres : leyenda,
         apellidoUno: item.primer_apellido ? item.primer_apellido : leyenda,
         apellidoDos: item.segundo_apellido ? item.segundo_apellido : leyenda,
-        institucion: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
-        autoridad: item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
+        institucion: item.institucion_dependencia ? {
+            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
+            siglas : item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
+        } : leyenda,
+        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
         expediente: item.expediente ? item.expediente : leyenda,
-        fecha_resolucion: item.resolucion && item.resolucion.fecha_notificacion ? item.resolucion.fecha_notificacion : leyenda,
-        sancion_impuesta: item.tipo_sancion ? item.tipo_sancion : leyenda,
-        fecha_inicio: item.inhabilitacion && item.inhabilitacion.fecha_inicial ? item.inhabilitacion.fecha_inicial : leyenda,
-        fecha_fin: item.inhabilitacion && item.inhabilitacion.fecha_final ? item.inhabilitacion.fecha_final : leyenda,
-        monto: item.multa && item.multa.monto ? item.multa.monto : leyenda,
-        causa: item.causa ? item.causa : leyenda
+        tipo_sancion: item.tipo_sancion ? item.tipo_sancion : leyenda,
+        causa: item.causa ? item.causa : leyenda,
+        fecha_captura: item.fecha_captura? item.fecha_captura : leyenda,
+        rfc : item.rfc ? item.rfc : leyenda,
+        curp : item.curp ? item.curp : leyenda,
+        genero : item.genero ? item.genero : leyenda,
+        tipo_falta : item.tipo_falta ? item.tipo_falta : leyenda,
+        resolucion : item.resolucion?  {
+            fecha_notificacion : item.resolucion.fecha_notificacion ? item.resolucion.fecha_notificacion : leyenda
+        } : leyenda,
+        multa : item.multa? {
+            monto : item.multa.monto ? item.multa.monto : leyenda,
+            moneda : item.multa.moneda ? item.multa.moneda : leyenda
+        } : leyenda,
+        inhabilitacion : item.inhabilitacion ? {
+            fecha_inicial : item.inhabilitacion.fecha_inicial ? item.inhabilitacion.fecha_inicial : leyenda,
+            fecha_final : item.inhabilitacion.fecha_final ? item.inhabilitacion.fecha_final : leyenda,
+            observaciones : item.inhabilitacion.observaciones ? item.inhabilitacion.observaciones : leyenda
+        } : leyenda
     };
 };
 

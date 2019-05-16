@@ -20,19 +20,33 @@ let createData = (item) => {
     let leyenda = "NO EXISTE DATO EN LA BASE DE DATOS SFP";
     return {
         id: counter,
-        proveedor: item.nombre_razon_social ? item.nombre_razon_social : leyenda,
-        dependencia: item.institucion_dependencia ? item.institucion_dependencia.nombre : leyenda,
-        expediente: item.numero_expediente ? item.numero_expediente : leyenda,
-        hechos: item.causa_motivo_hechos ? item.causa_motivo_hechos : leyenda,
+        fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
+        numero_expediente: item.numero_expediente ? item.numero_expediente : leyenda,
+        nombre_razon_social: item.nombre_razon_social ? item.nombre_razon_social : leyenda,
+        rfc : item.rfc ? item.rfc : leyenda,
+        telefono : item.telefono ? item.telefono : leyenda,
+        domicilio : item.domicilio ? '': leyenda,
+        tipo_sancion : item.tipo_sancion ? item.tipo_sancion : leyenda,
+        institucion_dependencia: item.institucion_dependencia ? {
+            nombre : item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
+            siglas : item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
+        } : leyenda,
+        tipo_falta : item.tipo_falta ? item.tipo_falta : leyenda,
+        causa_motivo_hechos: item.causa_motivo_hechos ? item.causa_motivo_hechos : leyenda,
         objetoSocial: item.objeto_social ? item.objeto_social : leyenda,
-        sentidoResolucion: item.resolucion ? item.resolucion.sentido : leyenda,
-        fechaNotificacion: item.fecha_notificacion ? item.fecha_notificacion : leyenda,
-        fechaResolucion: item.fecha_de_resolucion ? item.fecha_de_resolucion : leyenda,
-        plazo: item.plazo ? item.plazo.fecha_inicial + "-" + item.plazo.fecha_final : leyenda,
-        monto: item.multa ? item.multa.monto : leyenda,
-        responsableInformacion: item.responsable ? item.responsable.nombres + ' ' + item.responsable.primer_apellido + ' '
+        autoridad_sancionadora : item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
+        responsable: item.responsable ? item.responsable.nombres + ' ' + item.responsable.primer_apellido + ' '
             + item.responsable.segundo_apellido : leyenda,
-        fechaActualizacion: item.fecha_captura ? item.fecha_captura : leyenda
+        resolucion: item.resolucion ? {
+            sentido :  item.resolucion.sentido ?  item.resolucion.sentido : leyenda
+        } : leyenda,
+        fecha_notificacion: item.fecha_notificacion ? item.fecha_notificacion : leyenda,
+        multa : item.multa ? {
+            monto :  item.multa.monto ? item.multa.monto : leyenda,
+            moneda : item.multa.moneda ? item.multa.moneda : leyenda
+        } : leyenda,
+        plazo: item.plazo ? item.plazo.fecha_inicial + " - " + item.plazo.fecha_final : leyenda,
+        observaciones:  item.observaciones ? item.observaciones : leyenda
     };
 };
 
