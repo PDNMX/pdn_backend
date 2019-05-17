@@ -120,7 +120,7 @@ router.post('/getParticularesSancionados',cors(), (req, response) => {
                           segundo_apellido
                         }   
                         fecha_captura
-                        observaciones
+                        #observaciones
                       }
                     }
                              `
