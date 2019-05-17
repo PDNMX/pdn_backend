@@ -47,7 +47,8 @@ let createData = (item) => {
             fecha_inicial : item.inhabilitacion.fecha_inicial ? item.inhabilitacion.fecha_inicial : leyenda,
             fecha_final : item.inhabilitacion.fecha_final ? item.inhabilitacion.fecha_final : leyenda,
             observaciones : item.inhabilitacion.observaciones ? item.inhabilitacion.observaciones : leyenda
-        } : leyenda
+        } : leyenda,
+        puesto : item.puesto ? item.puesto : leyenda
     };
 };
 
@@ -113,11 +114,13 @@ router.post('/getServidoresSancionados',cors(), (req, response) => {
                         inhabilitacion{
                           fecha_inicial
                           fecha_final
+                          observaciones
                         }
                         multa{
                           monto
                         }
                         causa
+                        puesto
                       }
                     }
                              `
