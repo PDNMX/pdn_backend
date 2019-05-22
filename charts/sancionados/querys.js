@@ -6,18 +6,17 @@ var cors = require('cors');
 const {Client} = require('pg');
 
 const connectionData = {
-  user : 'app_user',
-  host :'localhost',
-  database : 'app_db',
-  password : 'P4ndtp9JMQsqGm2C',
-  port : 5432
+  user : process.env.USER_POSTGRES,
+  host : process.env.HOST_POSTGRES,
+  database : process.env.DATABASE_VIZ_S3,
+  password : process.env.PASSWORD_POSTGRES,
+  port : process.env.PORT_POSTGRES
 };
 
 
 router.get('/viz/getTemporalidadSanciones', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
-
     client.query("select date_part('year',fin::date)-date_part('year',inicio::date) as anios , count(*) as total from rsps where sancion_impuesta='INHABILITACION' group by anios order by anios")
         .then(response => {
             let rows = response.rows;

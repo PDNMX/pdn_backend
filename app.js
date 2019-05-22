@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var fileUpload = require('express-fileupload');
+require('dotenv').config();
+
 
 var corsOptions={
     origin:false
@@ -35,4 +37,4 @@ app.use('/',indexParticularesSancionados);
 app.use('/', querysSanciondos);
 
 
-app.listen(3100, () => console.log('Example app listening on port 3100!'))
+app.listen(process.env.PORT_GLOBAL, () => console.log('Example app listening on port '+process.env.PORT_GLOBAL))
