@@ -7,7 +7,6 @@ var logger = require('morgan');
 var cors = require('cors');
 var fileUpload = require('express-fileupload');
 
-
 var corsOptions={
     origin:false
 };
@@ -28,9 +27,12 @@ app.use(function(req, res, next) {
 var indexRouter = require('./routes/index');
 var indexSancionados = require('./apis/Sancionados/servidores');
 var indexParticularesSancionados = require('./apis/Sancionados/particulares');
+var querysSanciondos = require('./charts/sancionados/querys')
 
 app.use('/', indexRouter);
 app.use('/',indexSancionados);
 app.use('/',indexParticularesSancionados);
+app.use('/', querysSanciondos);
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+
+app.listen(3100, () => console.log('Example app listening on port 3100!'))
