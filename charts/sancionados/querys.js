@@ -143,4 +143,29 @@ router.get('/viz/getDependenciaCausa', cors(),(req,res)=>{
         })
 });
 
+router.get('/viz/getCausasAnio', cors(),(req,res)=>{
+    const client = new Client(connectionData);
+    client.connect ();
+
+    client.query("select date_part('year',fecha_resolucion::date) anio,causa, count(*) as total from rsps group by anio,causa")
+        .then(response => {
+            let rows = response.rows;
+            client.end();
+            return res.status(200).send(
+                {
+                    "status": 200,
+                    "data": rows
+                });
+        })
+        .catch(err => {
+            client.end();
+            console.log("Error : ",err);
+            return res.status(400).send(
+                {
+                    "status" : 400,
+                    "mensaje" : "Error al consultar BD"
+                }
+            )
+        })
+});
 module.exports = router;
