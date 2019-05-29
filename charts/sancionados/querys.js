@@ -168,4 +168,39 @@ router.get('/viz/getCausasAnio', cors(),(req,res)=>{
             )
         })
 });
+
+
+router.get('/viz/getSancionesAnualesDependencia', cors(),(req,res)=>{
+    const client = new Client(connectionData);
+    client.connect ();
+
+    client.query("select anio, dependencia,total " +
+        "from( " +
+        "select date_part('year',fecha_resolucion::date) anio,dependencia, count(*) as total, ROW_NUMBER() OVER(PARTITION BY date_part('year',fecha_resolucion::date)  ORDER BY count(*) desc) AS r " +
+        "from rsps " +
+        "group by anio,dependencia " +
+        "order by anio, total desc " +
+        ") x " +
+        "where x.r <=10")
+        .then(response => {
+            let rows = response.rows;
+            client.end();
+            return res.status(200).send(
+                {
+                    "status": 200,
+                    "data": rows
+                });
+        })
+        .catch(err => {
+            client.end();
+            console.log("Error : ",err);
+            return res.status(400).send(
+                {
+                    "status" : 400,
+                    "mensaje" : "Error al consultar BD"
+                }
+            )
+        })
+});
+
 module.exports = router;
