@@ -2,13 +2,24 @@ version: '3'
 volumes:
   pdn_upload_solicitudes:
 services:
-  solicitudes:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${PASSWORD_POSTGRES}
+      POSTGRES_USER: ${USER_POSTGRES}
+      POSTGRES_DB: ${DATABASE_VIZ_S3}
+
+  api:
     build:
       context: ./
       dockerfile: Dockerfile
     restart: always
     ports:
-      - 3000:3000
-      - 3200:3200
+      - ${PORT_GLOBAL}:${PORT_GLOBAL}
+    links:
+      - db
+    depends_on:
+      - db
     volumes:
       - 'pdn_upload_solicitudes:/pdn_backend/solicitudes'
