@@ -54,7 +54,7 @@ let createData = (item) => {
 
 
 
-router.post('/getServidoresSancionados',cors(), (req, response) => {
+router.post('/apis/getServidoresSancionados',cors(), (req, response) => {
     client
         .query({
             variables:

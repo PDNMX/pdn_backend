@@ -51,7 +51,7 @@ let createData = (item) => {
 };
 
 
-router.post('/getParticularesSancionados', cors(), (req, response) => {
+router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
     client
         .query({
             variables:
