@@ -52,39 +52,7 @@ let createData = (item) => {
     };
 };
 
-let getTotal = (params) => {
-    return new Promise((resolve, reject) => {
-        const unsubscribe = client
-            .query({
-                variables:
-                    {
-                        "filtros": params,
-                        "limit": null,
-                        "offset": 0
-                    },
 
-                query: gql` 
-                    query tot($filtros : FiltrosInput, $limit : Int, $offset : Int){
-                      servidores_publicos_sancionados(filtros : $filtros, limit : $limit, offset : $offset){
-                        nombres
-                        primer_apellido
-                        segundo_apellido
-                        institucion_dependencia{
-                          nombre
-                        }
-                    
-                      }
-                    }
-                             `
-            }).then(res => {
-                resolve(res.data.servidores_publicos_sancionados.length);
-            }).catch(err => {
-                console.log("Error: ", err);
-                return 0;
-            });
-    });
-
-};
 
 router.post('/getServidoresSancionados',cors(), (req, response) => {
     client
@@ -98,12 +66,13 @@ router.post('/getServidoresSancionados',cors(), (req, response) => {
 
             query: gql` 
                     query busca($filtros : FiltrosInput, $limit : Int, $offset : Int){
-                      servidores_publicos_sancionados(filtros : $filtros, limit : $limit, offset : $offset){
+                      results(filtros : $filtros, limit : $limit, offset : $offset){
                         nombres
                         primer_apellido
                         segundo_apellido
                         institucion_dependencia{
                           nombre
+                          siglas
                         }
                         autoridad_sancionadora
                         expediente
@@ -118,27 +87,24 @@ router.post('/getServidoresSancionados',cors(), (req, response) => {
                         }
                         multa{
                           monto
+                          moneda
                         }
                         causa
                         puesto
                       }
+                      total
                     }
                              `
         }).then(res => {
-        if (res && res.data && res.data.servidores_publicos_sancionados) {
-            let total = 0;
-            getTotal(req.body.filtros).then(result => {
-                total = result;
-                let dataAux = res.data.servidores_publicos_sancionados.map(item => {
-                    return createData(item);
-                });
-                return response.status(200).send(
-                    {
-                        "totalRows": total,
-                        "data": dataAux
-                    });
+        if (res && res.data && res.data.results) {
+            let dataAux = res.data.results.map(item => {
+                return createData(item);
             });
-
+            return response.status(200).send(
+                {
+                    "data": dataAux,
+                    "total" : res.data.total
+                });
         }
     }).catch(err => {
         console.log(err);
