@@ -14,7 +14,7 @@ const connectionData = {
 };
 
 
-router.get('/viz/getTemporalidadSanciones', cors(),(req,res)=>{
+router.get('/viz/servidores/getTemporalidadSanciones', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
     client.query("select date_part('year',fin::date)-date_part('year',inicio::date) as anios , count(*) as total from rsps where sancion_impuesta='INHABILITACION' group by anios order by anios")
@@ -39,7 +39,7 @@ router.get('/viz/getTemporalidadSanciones', cors(),(req,res)=>{
         })
 });
 
-router.get('/viz/getCausasSanciones', cors(),(req,res)=>{
+router.get('/viz/servidores/getCausasSanciones', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
 
@@ -65,7 +65,7 @@ router.get('/viz/getCausasSanciones', cors(),(req,res)=>{
         })
 });
 
-router.get('/viz/getAnioSancion', cors(),(req,res)=>{
+router.get('/viz/servidores/getAnioSancion', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
 
@@ -91,7 +91,7 @@ router.get('/viz/getAnioSancion', cors(),(req,res)=>{
         })
 });
 
-router.get('/viz/getDependenciaMayor', cors(),(req,res)=>{
+router.get('/viz/servidores/getDependenciaMayor', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
 
@@ -117,7 +117,7 @@ router.get('/viz/getDependenciaMayor', cors(),(req,res)=>{
         })
 });
 
-router.get('/viz/getDependenciaCausa', cors(),(req,res)=>{
+router.get('/viz/servidores/getDependenciaCausa', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
 
@@ -143,7 +143,7 @@ router.get('/viz/getDependenciaCausa', cors(),(req,res)=>{
         })
 });
 
-router.get('/viz/getCausasAnio', cors(),(req,res)=>{
+router.get('/viz/servidores/getCausasAnio', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
 
@@ -170,7 +170,7 @@ router.get('/viz/getCausasAnio', cors(),(req,res)=>{
 });
 
 
-router.get('/viz/getSancionesAnualesDependencia', cors(),(req,res)=>{
+router.get('/viz/servidores/getSancionesAnualesDependencia', cors(),(req,res)=>{
     const client = new Client(connectionData);
     client.connect ();
 

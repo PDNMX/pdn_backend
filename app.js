@@ -29,12 +29,15 @@ app.use(function(req, res, next) {
 var indexRouter = require('./routes/index');
 var indexSancionados = require('./apis/Sancionados/servidores');
 var indexParticularesSancionados = require('./apis/Sancionados/particulares');
-var querysSanciondos = require('./charts/sancionados/querys')
+var querysSanciondos = require('./charts/sancionados/querysServidores');
+var queryPartiuclaresSancionados = require('./charts/sancionados/querysParticulares');
 
 app.use('/', indexRouter);
 app.use('/',indexSancionados);
 app.use('/',indexParticularesSancionados);
 app.use('/', querysSanciondos);
+app.use('/', queryPartiuclaresSancionados);
+
 
 
 app.listen(process.env.PORT_GLOBAL, () => console.log('Example app listening on port '+process.env.PORT_GLOBAL))
