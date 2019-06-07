@@ -123,4 +123,40 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
         }
     });
 });
+
+
+router.get('/apis/getDependenciasParticulares', cors(), (req, response) => {
+    client
+        .query({
+            query: gql` 
+                   query busca($filtros: FiltrosInput, $limit: Int, $offset : Int) {
+                       results(filtros: $filtros, limit: $limit, offset : $offset){
+                        institucion_dependencia{
+                         nombre
+                        }
+                        }
+                    }
+                             `
+        }).then(res => {
+        if (res && res.data && res.data.results) {
+            let dataAux = res.data.results.map(item => {
+                return item.institucion_dependencia.nombre
+            });
+            Array.prototype.unique=function(a){
+                return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
+            });
+            return response.status(200).send(
+                {
+                    "data": dataAux.unique()
+                });
+
+        }
+    }).catch(err => {
+        console.log(err);
+        return {
+            "codigo": 400,
+            "mensaje": "Error al consultar funte de datos"
+        }
+    });
+});
 module.exports = router;
