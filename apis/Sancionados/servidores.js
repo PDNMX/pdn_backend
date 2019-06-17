@@ -8,7 +8,7 @@ var router = express.Router();
 var cors = require('cors');
 
 const client = new ApolloClient({
-    uri: "https://dgti-ees-servidores-publicos-Sancionados-api-master.200.34.175.120.nip.io/?token=secreto",
+    uri: process.env.ENDPOINT_SFP_SEVIDORESSANCIONADOS,
     cache: new InMemoryCache({
         addTypename: false
     })
