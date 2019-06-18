@@ -29,12 +29,16 @@ app.use(function(req, res, next) {
 var indexRouter = require('./routes/index');
 var indexSancionados = require('./apis/Sancionados/servidores');
 var indexParticularesSancionados = require('./apis/Sancionados/particulares');
+var indexRENIRESP = require('./apis/ServidoresIntervienen/servidoresIntervienen');
+
 var querysSanciondos = require('./charts/sancionados/querysServidores');
 var queryPartiuclaresSancionados = require('./charts/sancionados/querysParticulares');
 
 app.use('/', indexRouter);
 app.use('/',indexSancionados);
 app.use('/',indexParticularesSancionados);
+app.use('/', indexRENIRESP);
+
 app.use('/', querysSanciondos);
 app.use('/', queryPartiuclaresSancionados);
 
