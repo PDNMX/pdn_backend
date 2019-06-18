@@ -34,7 +34,6 @@ router.get('/apis/getDependenciasRENIRESP', cors(), (req, response) => {
                 }
            `
         }).then(res => {
-            console.log("Res: ",res);
             if(res && res.data && res.data.dependencias && res.data.dependencias.results){
                 let dataAux = res.data.dependencias.results.map(item =>{
                     return item.nombre;
@@ -46,7 +45,7 @@ router.get('/apis/getDependenciasRENIRESP', cors(), (req, response) => {
 
 
     }).catch(err=>{
-        console.log("eRR: ",err);
+        console.error(err);
         return {
             "codigo" : 400,
             "mensaje" : "Error al consultar fuente de datos",
