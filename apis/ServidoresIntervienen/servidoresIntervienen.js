@@ -102,7 +102,7 @@ router.post('/apis/s2/getSPC', cors(), (req, response) => {
                 "filtros": req.body.filtros,
                 "first": req.body.limit,
                 "start": req.body.offset,
-                "actualizacion" : {
+                "actualizacion": {
                     start: "2018-05-25T13:15:00",
                     end: "2018-05-26T13:15:00"
                 }
@@ -156,18 +156,18 @@ router.post('/apis/s2/getSPC', cors(), (req, response) => {
             }
 
            `
-        }).then(res =>{
-            if(res && res.data && res.data.servidor_publico && res.data.servidor_publico.results){
-                let dataAux = res.data.servidor_publico.results.map(item =>{
-                    return createData(item);
+        }).then(res => {
+        if (res && res.data && res.data.servidor_publico && res.data.servidor_publico.results) {
+            let dataAux = res.data.servidor_publico.results.map(item => {
+                return createData(item);
+            });
+            return response.status(200).send(
+                {
+                    "totalRows": res.data.servidor_publico.totalCount,
+                    "data": dataAux
                 });
-                return response.status(200).send(
-                    {
-                        "totalRows": res.data.servidor_publico.totalCount,
-                        "data": dataAux
-                    });
-            }
-    }).catch(err =>{
+        }
+    }).catch(err => {
         console.log(err);
         return {
             "codigo": 400,

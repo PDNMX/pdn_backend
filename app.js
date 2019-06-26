@@ -26,22 +26,26 @@ app.use(function(req, res, next) {
     next();
 });
 
+//APIS
 var indexRouter = require('./routes/index');
 var indexSancionados = require('./apis/Sancionados/servidores');
 var indexParticularesSancionados = require('./apis/Sancionados/particulares');
 var indexRENIRESP = require('./apis/ServidoresIntervienen/servidoresIntervienen');
 
+//CHARTS
 var querysSanciondos = require('./charts/sancionados/querysServidores');
 var queryPartiuclaresSancionados = require('./charts/sancionados/querysParticulares');
+var queryServidoresIntervienen = require('./charts/servidoresIntervienen/queryServidoresIntervienen')
 
 app.use('/', indexRouter);
 app.use('/',indexSancionados);
 app.use('/',indexParticularesSancionados);
 app.use('/', indexRENIRESP);
 
+//CHARTS
 app.use('/', querysSanciondos);
 app.use('/', queryPartiuclaresSancionados);
-
+app.use('/',queryServidoresIntervienen);
 
 
 app.listen(process.env.PORT_GLOBAL, () => console.log('Example app listening on port '+process.env.PORT_GLOBAL))
