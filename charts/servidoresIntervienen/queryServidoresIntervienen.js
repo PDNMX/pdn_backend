@@ -185,6 +185,6 @@ router.get('/viz/servidoresIntervienen/getInstituciones', cors(),(req,res)=>{
             )
         })
 });
-router.get()
+
 
 module.exports = router;
