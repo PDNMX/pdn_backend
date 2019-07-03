@@ -71,20 +71,16 @@ router.post('/viz/servidoresIntervienen/getAgrupaciones', cors(), (req, res) => 
 
     let aux = "";
     if (req.body.filtros) {
-        req.body.filtros.forEach((item, index, array) => {
-            console.log("item: ", item);
-            console.log("index: ", index);
+        req.body.filtros.forEach((item, index) => {
             aux += (index === 0 ? item : (" and " + item))
         });
     }
 
-console.log("Aux: ",aux);
     let query = "select ejercicio, ramo,institucion, count(*) total  " +
         " from reniresp " +
-        (req.body.filtros? (" where "+ aux):"")+
-            " group by ejercicio,ramo " + (req.body.grupos ? ("," + req.body.grupos) : "") +
-        " order by total desc ";
-    console.log("load: ", query);
+        (req.body.filtros ? (" where " + aux) : "") +
+        " group by ejercicio,ramo,institucion "+
+        " order by total desc,ejercicio,ramo,institucion";
 
     client.query(
         query
@@ -143,7 +139,6 @@ router.post('/viz/servidoresIntervienen/getRamos', cors(), (req, res) => {
     let query = "select ramo from reniresp " +
         (req.body.filtros ? (" where " + req.body.filtros) : "") +
         " group by ramo order by ramo ";
-    console.log("Query: ", query);
     client.connect();
     client.query(
         query
@@ -172,10 +167,17 @@ router.post('/viz/servidoresIntervienen/getRamos', cors(), (req, res) => {
 router.post('/viz/servidoresIntervienen/getInstituciones', cors(), (req, res) => {
     const client = new Client(connectionData);
     client.connect();
+
+    let aux = "";
+    if (req.body.filtros) {
+        req.body.filtros.forEach((item, index, array) => {
+            aux += (index === 0 ? item : (" and " + item))
+        });
+    }
+
     let query = "select institucion from reniresp " +
-        (req.body.filtros ? (" where " + req.body.filtros) : "") +
+        (req.body.filtros ? (" where " + aux) : "") +
         " group by institucion order by institucion ";
-    console.log("query: ", query);
     client.query(
         query
     )
