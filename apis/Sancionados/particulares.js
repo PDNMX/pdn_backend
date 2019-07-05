@@ -125,29 +125,32 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
 });
 
 
-router.get('/apis/getDependenciasParticulares', cors(), (req, response) => {
+router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
     client
         .query({
+            variables: {
+                "filtros": req.body.filtros
+            },
             query: gql` 
-                   query busca($filtros: FiltrosInput, $limit: Int, $offset : Int) {
-                       results(filtros: $filtros, limit: $limit, offset : $offset){
-                        institucion_dependencia{
-                         nombre
-                        }
-                        }
+                 query busca($filtros: FiltrosDep, $limit: Int, $offset: Int) {
+                      results_dependencias(filtros: $filtros, limit: $limit, offset: $offset) {
+                        institucion_dependencia
+                        nombre
+                        siglas
+                      }
+                      total
                     }
+
                              `
         }).then(res => {
-        if (res && res.data && res.data.results) {
-            let dataAux = res.data.results.map(item => {
-                return item.institucion_dependencia.nombre
+        if (res && res.data && res.data.results_dependencias) {
+            let dataAux = res.data.results_dependencias.map(item => {
+                return item.nombre
             });
-            Array.prototype.unique=function(a){
-                return function(){return this.filter(a)}}(function(a,b,c){return c.indexOf(a,b+1)<0
-            });
+
             return response.status(200).send(
                 {
-                    "data": dataAux.unique()
+                    "data": dataAux
                 });
 
         }
