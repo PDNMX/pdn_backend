@@ -203,15 +203,37 @@ router.post('/viz/servidoresIntervienen/getInstituciones', cors(), (req, res) =>
         })
 });
 
+
 router.post("/viz/servidoresIntervienen/getTop", cors(),(req,res)=>{
    const client = new Client(connectionData);
+  /* let query = "select puesto, count(*) total from reniresp group by puesto  order by total desc limit 10"*/
+
+   let query = "select "+ req.body.top+", count(*) from reniresp " +
+       (req.body.filtros ? (" where " + req.body.filtros) : "") +
+       " group by "+ req.body.top + " order by " + req.body.top ;
+
+
+  console.log("query: ",query);
    client.connect();
-   client.query("")
+   client.query(query)
        .then(response=>{
-
+         let rows = response.rows;
+         client.end();
+         return res.status(200).send(
+             {
+                 "status": 200,
+                 "data": rows
        })
+     })
        .catch(err=>{
-
+         client.end();
+         console.log("Error : ", err);
+         return res.status(400).send(
+             {
+                 "status": 400,
+                 "mensaje": "Error al consultar BD"
+             }
+         )
        });
 });
 
