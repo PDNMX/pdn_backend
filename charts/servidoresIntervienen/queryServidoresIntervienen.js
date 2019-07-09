@@ -203,5 +203,17 @@ router.post('/viz/servidoresIntervienen/getInstituciones', cors(), (req, res) =>
         })
 });
 
+router.post("/viz/servidoresIntervienen/getTop", cors(),(req,res)=>{
+   const client = new Client(connectionData);
+   client.connect();
+   client.query("")
+       .then(response=>{
+
+       })
+       .catch(err=>{
+
+       });
+});
+
 
 module.exports = router;
