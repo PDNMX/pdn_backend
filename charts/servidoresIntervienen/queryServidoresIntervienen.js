@@ -208,9 +208,9 @@ router.post("/viz/servidoresIntervienen/getTop", cors(),(req,res)=>{
    const client = new Client(connectionData);
   /* let query = "select puesto, count(*) total from reniresp group by puesto  order by total desc limit 10"*/
 
-   let query = "select "+ req.body.top+", count(*) from reniresp " +
+   let query = "select "+ req.body.top+", count(*) total from reniresp " +
        (req.body.filtros ? (" where " + req.body.filtros) : "") +
-       " group by "+ req.body.top + " order by " + req.body.top ;
+       " group by "+ req.body.top + " order by total desc limit 10"  ;
 
 
   console.log("query: ",query);
