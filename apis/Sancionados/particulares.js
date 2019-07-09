@@ -45,7 +45,7 @@ let createData = (item) => {
             monto: item.multa.monto ? item.multa.monto : leyenda,
             moneda: item.multa.moneda ? item.multa.moneda : leyenda
         } : leyenda,
-        plazo: item.plazo ? item.plazo.fecha_inicial + " - " + item.plazo.fecha_final : leyenda,
+        plazo: (item.plazo && item.plazo.fecha_inicial && item.plazo.fecha_final) ? item.plazo.fecha_inicial + " - " + item.plazo.fecha_final : leyenda,
         observaciones: item.observaciones ? item.observaciones : leyenda
     };
 };
@@ -132,8 +132,8 @@ router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
                 "filtros": req.body.filtros
             },
             query: gql` 
-                 query busca($filtros: FiltrosDep, $limit: Int, $offset: Int) {
-                      results_dependencias(filtros: $filtros, limit: $limit, offset: $offset) {
+                 query busca($filtros: FiltrosDep) {
+                      results_dependencias(filtros: $filtros) {
                         institucion_dependencia
                         nombre
                         siglas

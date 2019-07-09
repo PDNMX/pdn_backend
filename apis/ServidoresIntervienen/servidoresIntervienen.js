@@ -178,7 +178,6 @@ router.post('/apis/s2/getSPC', cors(), (req, response) => {
 router.get('/apis/getDependenciasRENIRESP', cors(), (req, response) => {
     client
         .query({
-            variables: null,
             query: gql`
           query{
                   dependencias(sort:{
