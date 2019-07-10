@@ -206,14 +206,18 @@ router.post('/viz/servidoresIntervienen/getInstituciones', cors(), (req, res) =>
 
 router.post("/viz/servidoresIntervienen/getTop", cors(),(req,res)=>{
    const client = new Client(connectionData);
-  /* let query = "select puesto, count(*) total from reniresp group by puesto  order by total desc limit 10"*/
 
-   let query = "select "+ req.body.top+", count(*) total from reniresp " +
-       (req.body.filtros ? (" where " + req.body.filtros) : "") +
+    let aux = "";
+    if (req.body.filtros) {
+        req.body.filtros.forEach((item, index) => {
+            aux += (index === 0 ? item : (" and " + item))
+        });
+    }
+
+   let query = "select "+ req.body.top+" as top, count(*) total from reniresp " +
+       (req.body.filtros ? (" where " + aux) : "") +
        " group by "+ req.body.top + " order by total desc limit 10"  ;
 
-
-  console.log("query: ",query);
    client.connect();
    client.query(query)
        .then(response=>{
