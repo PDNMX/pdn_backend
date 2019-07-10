@@ -214,9 +214,16 @@ router.post("/viz/servidoresIntervienen/getTop", cors(),(req,res)=>{
         });
     }
 
-   let query = "select "+ req.body.top+" as top, count(*) total from reniresp " +
+   let query = "";
+    if(req.body.top!=="id_procedimiento")
+        query = "select "+ req.body.top+" as top, count(*) total from reniresp " +
        (req.body.filtros ? (" where " + aux) : "") +
        " group by "+ req.body.top + " order by total desc limit 10"  ;
+    else
+        query = "select "+ req.body.top+" as top, count(*) total,case when id_procedimiento='1' then 'CONTRATACIONES' when id_procedimiento='2' then 'CONCESIONES' when id_procedimiento='3' then 'ENAJENACIÓN' else 'OTRO' end" +
+            " from reniresp " +
+            (req.body.filtros ? (" where " + aux) : "") +
+            " group by "+ req.body.top + " order by total desc limit 10"  ;
 
    client.connect();
    client.query(query)
