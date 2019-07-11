@@ -101,15 +101,11 @@ router.post('/apis/s2/getSPC', cors(), (req, response) => {
             variables: {
                 "filtros": req.body.filtros,
                 "first": req.body.limit,
-                "start": req.body.offset,
-                "actualizacion": {
-                    start: "2018-05-25T13:15:00",
-                    end: "2018-05-26T13:15:00"
-                }
+                "start": req.body.offset
             },
             query: gql`
-           query test($filtros: Filtros, $first: Int, $start: Int, $sort: Sort, $actualizacion : DateRange!) {
-              servidor_publico(filtros: $filtros, first: $first, start: $start, sort: $sort,  actualizacion: $actualizacion){
+           query test($filtros: Filtros, $first: Int, $start: Int, $sort: Sort) {
+              servidor_publico(filtros: $filtros, first: $first, start: $start, sort: $sort){
                 totalCount
                 pageInfo {
                   hasNextPage
@@ -157,6 +153,7 @@ router.post('/apis/s2/getSPC', cors(), (req, response) => {
 
            `
         }).then(res => {
+            console.log("Res: ",res);
         if (res && res.data && res.data.servidor_publico && res.data.servidor_publico.results) {
             let dataAux = res.data.servidor_publico.results.map(item => {
                 return createData(item);

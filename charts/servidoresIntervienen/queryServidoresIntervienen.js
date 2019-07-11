@@ -249,4 +249,31 @@ router.post("/viz/servidoresIntervienen/getTop", cors(),(req,res)=>{
 });
 
 
+router.get('/viz/servidoresIntervienen/getProcedimientosPeriodo', cors(), (req, res) => {
+    const client = new Client(connectionData);
+    client.connect();
+    client.query(
+        "select ejercicio,  case when id_procedimiento='1' then 'CONTRATACIONES' when id_procedimiento='2' then 'CONCESIONES' when id_procedimiento='3' then 'ENAJENACIÓN' else 'OTRO' end,  count(*) total from reniresp group by ejercicio, id_procedimiento order by ejercicio,id_procedimiento  desc"
+    )
+        .then(response => {
+            let rows = response.rows;
+            client.end();
+            return res.status(200).send(
+                {
+                    "status": 200,
+                    "data": rows
+                });
+        })
+        .catch(err => {
+            client.end();
+            console.log("Error : ", err);
+            return res.status(400).send(
+                {
+                    "status": 400,
+                    "mensaje": "Error al consultar BD"
+                }
+            )
+        })
+});
+
 module.exports = router;
