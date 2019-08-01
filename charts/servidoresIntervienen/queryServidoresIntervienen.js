@@ -140,7 +140,6 @@ router.post('/viz/servidoresIntervienen/getRamos', cors(), (req, res) => {
         (req.body.filtros ? (" where " + req.body.filtros) : "") +
         " group by ramo order by ramo ";
     client.connect();
-    console.log("query: ",query);
     client.query(
         query
     )
