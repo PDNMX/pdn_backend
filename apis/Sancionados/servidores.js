@@ -44,9 +44,9 @@ let createData = (item) => {
             moneda : item.multa.moneda ? item.multa.moneda : leyenda
         } : leyenda,
         inhabilitacion : item.inhabilitacion ? {
-            fecha_inicial : item.inhabilitacion.fecha_inicial ? item.inhabilitacion.fecha_inicial : leyenda,
-            fecha_final : item.inhabilitacion.fecha_final ? item.inhabilitacion.fecha_final : leyenda,
-            observaciones : item.inhabilitacion.observaciones ? item.inhabilitacion.observaciones : leyenda
+            fecha_inicial : (item.inhabilitacion.fecha_inicial && item.inhabilitacion.fecha_inicial.trim() )? item.inhabilitacion.fecha_inicial : leyenda,
+            fecha_final : (item.inhabilitacion.fecha_final && item.inhabilitacion.fecha_final.trim()) ? item.inhabilitacion.fecha_final : leyenda,
+            observaciones : (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim())? item.inhabilitacion.observaciones : leyenda
         } : leyenda,
         puesto : item.puesto ? item.puesto : leyenda
     };
