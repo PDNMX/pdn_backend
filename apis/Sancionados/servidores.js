@@ -20,9 +20,9 @@ let createData = (item) => {
     counter += 1;
     return {
         id: counter,
-        nombre: item.nombres ? item.nombres : leyenda,
-        apellidoUno: item.primer_apellido ? item.primer_apellido : leyenda,
-        apellidoDos: item.segundo_apellido ? item.segundo_apellido : leyenda,
+        nombre: item.nombres ? item.nombres : '',
+        apellidoUno: item.primer_apellido ? item.primer_apellido : '',
+        apellidoDos: item.segundo_apellido ? item.segundo_apellido : '',
         institucion: item.institucion_dependencia ? {
             nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
             siglas : item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
