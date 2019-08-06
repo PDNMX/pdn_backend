@@ -117,10 +117,12 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
         }
     }).catch(err => {
         console.log(err);
-        return {
-            "codigo": 400,
-            "mensaje": "Error al consultar funte de datos"
-        }
+        return response.status(400).send(
+            {
+                "codigo" : 400,
+                "mensaje" : "Error al consultar funte de datos"
+            }
+        )
     });
 });
 
@@ -156,10 +158,12 @@ router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
         }
     }).catch(err => {
         console.log(err);
-        return {
-            "codigo": 400,
-            "mensaje": "Error al consultar funte de datos"
-        }
+        return response.status(400).send(
+            {
+                "codigo" : 400,
+                "mensaje" : "Error al consultar funte de datos"
+            }
+        )
     });
 });
 module.exports = router;

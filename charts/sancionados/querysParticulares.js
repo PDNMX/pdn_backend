@@ -138,7 +138,6 @@ router.get('/viz/particulares/getResolucionesAnualesDependencia', cors(),(req,re
         })
         .catch(err => {
             client.end();
-            console.log("Error : ",err);
             return res.status(400).send(
                 {
                     "status" : 400,

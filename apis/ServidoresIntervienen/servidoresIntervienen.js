@@ -58,6 +58,7 @@ let createData = (item) => {
         nombre: item.nombres ? item.nombres : '',
         apellidoUno: item.primer_apellido ? item.primer_apellido : '',
         apellidoDos: item.segundo_apellido ? item.segundo_apellido : '',
+        servidor: (item.nombres ? item.nombres + ' ' : '') + (item.primer_apellido ? item.primer_apellido + ' ' : '') + (item.segundo_apellido ? item.segundo_apellido : ''),
         institucion: {
             nombre: item.dependencia && item.dependencia.nombre ? item.dependencia.nombre : leyenda,
             siglas: item.dependencia && item.dependencia.siglas ? item.dependencia.siglas : ''
@@ -66,7 +67,7 @@ let createData = (item) => {
             nombre: item.puesto && item.puesto.nombre ? item.puesto.nombre : leyenda,
             nivel: item.puesto && item.puesto.nivel ? item.puesto.nivel : leyenda
         },
-        tipoArea: tipoArea,
+        tipoArea: tipoArea.length > 0 ? tipoArea : leyenda,
         contrataciones: item.tipo_procedimiento === 1 ? nivel : "NO APLICA",
         concesionesLicencias: item.tipo_procedimiento === 2 ? nivel : "NO APLICA",
         enajenacion: item.tipo_procedimiento === 3 ? nivel : "NO APLICA",
@@ -95,15 +96,7 @@ let createData = (item) => {
     };
 };
 
-router.post('/apis/s2/getSPC', cors(), (req, response) => {
-    client
-        .query({
-            variables: {
-                "filtros": req.body.filtros,
-                "first": req.body.limit,
-                "start": req.body.offset
-            },
-            query: gql`
+let queryS = gql`
            query test($filtros: Filtros, $first: Int, $start: Int, $sort: Sort) {
               servidor_publico(filtros: $filtros, first: $first, start: $start, sort: $sort){
                 totalCount
@@ -151,27 +144,63 @@ router.post('/apis/s2/getSPC', cors(), (req, response) => {
               }
             }
 
-           `
-        }).then(res => {
-            console.log("Res: ",res);
-        if (res && res.data && res.data.servidor_publico && res.data.servidor_publico.results) {
-            let dataAux = res.data.servidor_publico.results.map(item => {
-                return createData(item);
-            });
+           `;
+
+router.post('/apis/s2/getSPC', cors(), (req, response) => {
+    let variables = {
+        "first": req.body && req.body.limit ? req.body.limit : 5000,
+        "start": req.body && req.body.offset ? req.body.offset : 1
+    };
+
+    let iterar = req.body.iterar;
+    if (req.body && req.body.filtros) variables.filtros = req.body.filtros;
+
+    function getPaginatedElements(variables, elements = [], itera) {
+        return new Promise((resolve, reject) => {
+                client.query({
+                    variables: variables,
+                    query: queryS
+                }).then(response => {
+                    const newElements = elements.concat(response.data.servidor_publico.results.map(item => {
+                        return createData(item)
+                    }));
+                    if (response.data.servidor_publico.results.length === 0) {
+                        resolve({data: newElements, totalCount: response.data.servidor_publico.totalCount});
+                    } else {
+                        if (response.data.servidor_publico.pageInfo.hasNextPage && itera) {
+                            variables.start = variables.start + variables.first;
+                            getPaginatedElements(variables, newElements, itera)
+                                .then(resolve)
+                                .catch(reject)
+                        } else
+                            resolve({data: newElements, totalCount: response.data.servidor_publico.totalCount});
+                    }
+                }).catch(reject)
+            }
+        );
+    }
+
+    let aux = [];
+    getPaginatedElements(variables, aux, iterar).then(
+        res => {
             return response.status(200).send(
                 {
-                    "totalRows": res.data.servidor_publico.totalCount,
-                    "data": dataAux
+                    "totalRows": res.totalCount,
+                    "data": res.data
                 });
         }
-    }).catch(err => {
-        console.log(err);
-        return {
-            "codigo": 400,
-            "mensaje": "Error al consultar funte de datos"
-        }
-    })
+    ).catch(err => {
+        console.log("Error: ", err);
+        return response.status(400).send(
+            {
+                "codigo": 400,
+                "mensaje": "Error al consultar funte de datos"
+            }
+        )
+    });
+
 });
+
 router.get('/apis/getDependenciasRENIRESP', cors(), (req, response) => {
     client
         .query({
@@ -203,11 +232,12 @@ router.get('/apis/getDependenciasRENIRESP', cors(), (req, response) => {
 
     }).catch(err => {
         console.error(err);
-        return {
-            "codigo": 400,
-            "mensaje": "Error al consultar fuente de datos",
-            "data": err
-        }
+        return response.status(400).send(
+            {
+                "codigo": 400,
+                "mensaje": "Error al consultar funte de datos"
+            }
+        )
     });
 });
 

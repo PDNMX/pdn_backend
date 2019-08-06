@@ -108,10 +108,12 @@ router.post('/apis/getServidoresSancionados',cors(), (req, response) => {
         }
     }).catch(err => {
         console.error(err);
-        return {
-            "codigo": 400,
-            "mensaje": "Error al consultar funte de datos"
-        }
+        return response.status(400).send(
+            {
+                "codigo" : 400,
+                "mensaje" : "Error al consultar funte de datos"
+            }
+        )
     });
 });
 
@@ -143,11 +145,12 @@ router.get('/apis/getDependenciasServidores',cors(), (req, response) => {
         }
     }).catch(err => {
         console.error(err);
-        return {
-            "codigo": 400,
-            "mensaje": "Error al consultar fuente de datos",
-            "data": err
-        }
+        return response.status(400).send(
+            {
+                "codigo" : 400,
+                "mensaje" : "Error al consultar funte de datos"
+            }
+        )
     });
 });
 module.exports = router;
