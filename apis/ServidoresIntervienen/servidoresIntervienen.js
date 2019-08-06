@@ -148,7 +148,7 @@ let queryS = gql`
 
 router.post('/apis/s2/getSPC', cors(), (req, response) => {
     let variables = {
-        "first": req.body && req.body.limit ? req.body.limit : 5000,
+        "first": req.body && req.body.limit ? req.body.limit : 200,
         "start": req.body && req.body.offset ? req.body.offset : 1
     };
 
