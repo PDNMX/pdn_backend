@@ -1,11 +1,11 @@
-import express from 'express';
+var exports = module.exports = {};
 import 'cross-fetch/polyfill';
 import ApolloClient from "apollo-boost";
 import {gql} from "apollo-boost";
 import {InMemoryCache} from "apollo-cache-inmemory";
 
-var router = express.Router();
-var cors = require('cors');
+const SO = "Secretaría de la Función Pública";
+const CLAVE_API = "sfp";
 
 const client = new ApolloClient({
     uri: process.env.ENDPOINT_SFP_PARTICULARESSANCIONADOS,
@@ -50,18 +50,7 @@ let createData = (item) => {
     };
 };
 
-
-router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
-    client
-        .query({
-            variables:
-                {
-                    "filtros": req.body.filtros,
-                    "limit": req.body.limit,
-                    "offset": req.body.offset
-                },
-
-            query: gql` 
+let query = gql` 
                    query busca($filtros: FiltrosInput, $limit: Int, $offset : Int) {
                        results(filtros: $filtros, limit: $limit, offset : $offset){
                         fecha_captura
@@ -100,70 +89,99 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
                         }
                         observaciones
                       }
-                      total
+                      total(filtros:$filtros)
                     }
-                             `
-        }).then(res => {
-        if (res && res.data && res.data.results) {
-            let dataAux = res.data.results.map(item => {
-                return createData(item);
-            });
-            return response.status(200).send(
-                {
+                             `;
+
+exports.getPrevioParticularesSancionados = function (req) {
+    return new Promise((resolve, reject) => {
+        client
+            .query({
+                variables:
+                    {
+                        "filtros": req.body.filtros,
+                        "limit": 1,
+                        "offset": req.body.offset
+                    },
+                query: query
+            }).then(res => {
+            if (res && res.data) {
+                resolve({
+                    sujeto_obligado: SO,
+                    estatus: true,
+                    totalRows: res.data.total,
+                    clave_api: CLAVE_API
+                })
+            }
+        }).catch(err => {
+            resolve({
+                sujeto_obligado: SO,
+                estatus: false,
+                totalRows: 0,
+                clave_api: CLAVE_API
+            })
+        });
+    });
+};
+
+exports.getParticularesSancionados = function (req) {
+    return new Promise((resolve, reject) => {
+        client
+            .query({
+                variables:
+                    {
+                        "filtros": req.body.filtros,
+                        "limit": req.body.limit,
+                        "offset": req.body.offset
+                    },
+                query: query
+            }).then(res => {
+            if (res && res.data && res.data.results) {
+                let dataAux = res.data.results.map(item => {
+                    return createData(item);
+                });
+                resolve({
                     "totalRows": res.data.total,
                     "data": dataAux
-                });
-
-        }
-    }).catch(err => {
-        console.log(err);
-        return response.status(400).send(
-            {
-                "codigo" : 400,
-                "mensaje" : "Error al consultar funte de datos"
+                })
             }
-        )
+        }).catch(err => {
+            reject(err)
+        });
     });
-});
+};
 
 
-router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
-    client
-        .query({
-            variables: {
-                "filtros": req.body.filtros
-            },
-            query: gql` 
-                 query busca($filtros: FiltrosDep) {
-                      results_dependencias(filtros: $filtros) {
+
+exports.getDependenciasParticularesSancionados = function (req) {
+    return new Promise((resolve, reject) => {
+        client
+            .query({
+
+                query: gql` query dep{
+                      results_dependencias(ordenCampo:nombre, ordenSentido:asc){
                         institucion_dependencia
                         nombre
                         siglas
+                        
                       }
-                      total
                     }
 
                              `
-        }).then(res => {
-        if (res && res.data && res.data.results_dependencias) {
-            let dataAux = res.data.results_dependencias.map(item => {
-                return item.nombre
-            });
-
-            return response.status(200).send(
-                {
+            }).then(res => {
+            if (res && res.data && res.data.results_dependencias) {
+                let dataAux = res.data.results_dependencias.map(item => {
+                    return item.nombre
+                });
+                resolve({
                     "data": dataAux
                 });
-
-        }
-    }).catch(err => {
-        console.log(err);
-        return response.status(400).send(
-            {
-                "codigo" : 400,
-                "mensaje" : "Error al consultar funte de datos"
             }
-        )
-    });
-});
-module.exports = router;
+        }).catch(err => {
+            reject(err);
+        });
+    })
+};
+
+
+

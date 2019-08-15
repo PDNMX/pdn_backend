@@ -28,8 +28,8 @@ app.use(function(req, res, next) {
 
 //APIS
 var indexRouter = require('./routes/index');
-var indexSancionados = require('./apis/Sancionados/servidores');
-var indexParticularesSancionados = require('./apis/Sancionados/particulares');
+var indexSancionados = require('./apis/Sancionados/Servidores/main');
+var indexParticularesSancionados = require('./apis/Sancionados/Particulares/main');
 var indexRENIRESP = require('./apis/ServidoresIntervienen/servidoresIntervienen');
 
 //CHARTS
