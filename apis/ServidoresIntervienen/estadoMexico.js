@@ -135,7 +135,7 @@ function getDataPrevio(token,req) {
                 totalRows: 0,
                 clave_api:"em"
             });
-            if (body) {
+            if (body.totalRows) {
                 let info = JSON.parse(body)
                 resolve({
                     sujeto_obligado: "Estado de México",
@@ -143,6 +143,13 @@ function getDataPrevio(token,req) {
                     totalRows: info.paginacion.total,
                     clave_api:"em"
                 })
+            } else {
+                reject({
+                    sujeto_obligado: "Estado de México",
+                    estatus:false,
+                    totalRows: 0,
+                    clave_api:"em"
+                });
             }
         });
 
@@ -170,13 +177,15 @@ function getData(token,req) {
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject;
-            if (body) {
+            if (error) reject();
+            if (body.results && body.totalRows) {
                 let info = JSON.parse(body);
                 resolve({
                     results: info.results,
                     totalRows: info.paginacion.total
                 })
+            } else {
+                reject();
             }
         });
 
