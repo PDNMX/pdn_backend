@@ -157,8 +157,9 @@ exports.getDependenciasServidoresSancionados = function (req) {
                 let dataAux = res.data.results.map(item => {
                     return item.institucion_dependencia.nombre
                 });
+                let limpio = new Set(dataAux)
                 resolve({
-                    "data": dataAux
+                    "data": [...limpio]
                 });
             }
         }).catch(err => {

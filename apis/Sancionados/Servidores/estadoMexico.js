@@ -9,9 +9,9 @@ let createDataEM = (item) =>{
     let leyenda = "NO EXISTE DATO EN LA BASE DEL ESTADO DE MÉXICO";
     return {
         id: counter,
-        nombre: item.servidor_publico_sancioando && item.servidor_publico_sancioando.nombres ? item.servidor_publico_sancioando.nombres : '',
-        apellidoUno: item.servidor_publico_sancioando && item.servidor_publico_sancioando.primer_apellido ? item.servidor_publico_sancioando.primer_apellido : '',
-        apellidoDos: item.servidor_publico_sancioando && item.servidor_publico_sancioando.segundo_apellido ? item.servidor_publico_sancioando.segundo_apellido : '',
+        nombre: item.servidor_publico_sancionado && item.servidor_publico_sancionado.nombres ? item.servidor_publico_sancionado.nombres : '',
+        apellidoUno: item.servidor_publico_sancionado && item.servidor_publico_sancionado.primer_apellido ? item.servidor_publico_sancionado.primer_apellido : '',
+        apellidoDos: item.servidor_publico_sancionado && item.servidor_publico_sancionado.segundo_apellido ? item.servidor_publico_sancionado.segundo_apellido : '',
         institucion: item.institucion_dependencia ? {
             nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
             siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
@@ -21,9 +21,9 @@ let createDataEM = (item) =>{
         tipo_sancion: item.tipo_sancion ? item.tipo_sancion : leyenda,
         causa: item.causa_motivo_hechos ? item.causa_motivo_hechos : leyenda,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
-        rfc: item.servidor_publico_sancioando && item.servidor_publico_sancioando.rfc ? item.servidor_publico_sancioando.rfc : leyenda,
-        curp: item.servidor_publico_sancioando && item.servidor_publico_sancioando.curp ? item.servidor_publico_sancioando.curp : leyenda,
-        genero: item.servidor_publico_sancioando && item.servidor_publico_sancioando.genero ? item.servidor_publico_sancioando.genero : leyenda,
+        rfc: item.servidor_publico_sancionado && item.servidor_publico_sancionado.rfc ? item.servidor_publico_sancionado.rfc : leyenda,
+        curp: item.servidor_publico_sancionado && item.servidor_publico_sancionado.curp ? item.servidor_publico_sancionado.curp : leyenda,
+        genero: item.servidor_publico_sancionado && item.servidor_publico_sancionado.genero ? item.servidor_publico_sancionado.genero : leyenda,
         tipo_falta: item.tipo_falta ? item.tipo_falta : leyenda,
         resolucion: item.resolucion ? {
             fecha_notificacion: item.resolucion.fecha_notificacion ? item.resolucion.fecha_notificacion : leyenda
@@ -37,7 +37,7 @@ let createDataEM = (item) =>{
             fecha_final: (item.inhabilitacion.fecha_final && item.inhabilitacion.fecha_final.trim()) ? item.inhabilitacion.fecha_final : leyenda,
             observaciones: (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim()) ? item.inhabilitacion.observaciones : leyenda
         } : leyenda,
-        puesto: item.servidor_publico_sancioando && item.servidor_publico_sancioando.puesto ? item.servidor_publico_sancioando.puesto : leyenda
+        puesto: item.servidor_publico_sancionado && item.servidor_publico_sancionado.puesto ? item.servidor_publico_sancionado.puesto : leyenda
     };
 };
 
@@ -100,7 +100,7 @@ exports.getPrevioServidoresSancionados =  function (req) {
 function getDataPrevio(token,req) {
     let options = {
         method: 'GET',
-        url: process.env.ENDPOINT_EM_PARTICULARESSANCIONADOS,
+        url: process.env.ENDPOINT_EM_SERVIDORESSANCIONADOS,
         qs:
             {
                 access_token: token,
@@ -111,11 +111,13 @@ function getDataPrevio(token,req) {
             }
     };
 
-    if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc
+    if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
+    if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.nombre) options.qs.institucion = req.body.filtros.nombre
     if(req.body.filtros.curp) options.qs.curp = req.body.filtros.curp
+    if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc
+
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
@@ -152,11 +154,13 @@ function getData(token,req) {
 
             }
     };
-    if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc
+
+    if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
+    if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.nombre) options.qs.institucion = req.body.filtros.nombre
     if(req.body.filtros.curp) options.qs.curp = req.body.filtros.curp
+    if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
@@ -188,6 +192,56 @@ exports.getServidoresSancionados =  function (req) {
                     {
                         "data": datosMapeados,
                         "totalRows" : resultado.totalRows
+                    })
+            }).catch(error => {
+                reject(error)
+            });
+
+        }).catch(err => {
+            return response.status(400).send(
+                {
+                    "error": err
+                })
+        });
+    });
+}
+
+function getDependencias (token){
+    let options = {
+        method: 'GET',
+        url: process.env.ENDPOINT_EM_SERVIDORESSANCIONADOS_DEPENDENCIAS,
+        qs:
+            {
+                access_token: token
+            }
+    };
+
+
+    return new Promise((resolve, reject) => {
+        request(options, function (error, res, body) {
+            if (error) reject;
+            if (body) {
+                let info = JSON.parse(body);
+                let dataAux = info.map(item => {
+                    return item.nombre
+                });
+                resolve({
+                    instituciones:dataAux,
+                })
+            }
+        });
+
+    });
+}
+exports.getDependenciasServidoresSancionados = function (req) {
+    return new Promise((resolve, reject) => {
+        getToken().then(res => {
+            let token = res.token;
+            getDependencias(token).then(resultado => {
+                let limpio = new Set(resultado.instituciones);
+                resolve(
+                    {
+                        "data":  [...limpio],
                     })
             }).catch(error => {
                 reject(error)

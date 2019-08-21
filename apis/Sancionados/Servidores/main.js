@@ -10,21 +10,21 @@ var Promise = require("bluebird");
 let em = require('./estadoMexico');
 let sfp = require('./sfp');
 
-router.post('/apis/getPrevioServidoresSancionados',cors(),(req,response) => {
-   let nivel = req.body.nivel;
-   let getDataPromisses = [];
+router.post('/apis/getPrevioServidoresSancionados', cors(), (req, response) => {
+    let nivel = req.body.nivel;
+    let getDataPromisses = [];
 
-   switch (nivel) {
-       case "federal":
-           getDataPromisses.push(sfp.getPrevioServidoresSancionados(req));
-           break;
-       case "estatal":
-           getDataPromisses.push(em.getPrevioServidoresSancionados(req));
-           break;
-       default :
-           getDataPromisses.push(sfp.getPrevioServidoresSancionados(req),em.getPrevioServidoresSancionados(req));
-           break;
-   }
+    switch (nivel) {
+        case "federal":
+            getDataPromisses.push(sfp.getPrevioServidoresSancionados(req));
+            break;
+        case "estatal":
+            getDataPromisses.push(em.getPrevioServidoresSancionados(req));
+            break;
+        default :
+            getDataPromisses.push(sfp.getPrevioServidoresSancionados(req), em.getPrevioServidoresSancionados(req));
+            break;
+    }
     Promise.all(getDataPromisses).then(function (res) {
         return response.status(200).send(
             res);
@@ -32,7 +32,7 @@ router.post('/apis/getPrevioServidoresSancionados',cors(),(req,response) => {
 });
 
 
-router.post('/apis/getServidoresSancionados',cors(),(req,response)=>{
+router.post('/apis/getServidoresSancionados', cors(), (req, response) => {
     let api = req.body.clave_api;
     let getDataPromisses = [];
 
@@ -48,24 +48,40 @@ router.post('/apis/getServidoresSancionados',cors(),(req,response)=>{
     Promise.all(getDataPromisses).then(function (res) {
         let result = res[0];
         return response.status(200).send({
-            "data":result.data,
-            "totalRows":result.totalRows
+            "data": result.data,
+            "totalRows": result.totalRows
         });
     });
 
 });
 
-router.get('/apis/getDependenciasServidores', cors(), (req, response) => {
-    sfp.getDependenciasServidoresSancionados(req).then(res=>{
-        return response.status(200).send(res);
-    }).catch(err=>{
-        return response.status(400).send(
-            {
-                "codigo": 400,
-                "mensaje": "Error al consultar funte de datos"
-            }
-        )
-    })
+router.post('/apis/getDependenciasServidores', cors(), (req, response) => {
+    let nivel = req.body.nivel;
+    let getDataPromisses = [];
+
+    switch (nivel) {
+        case "federal":
+            getDataPromisses.push(sfp.getDependenciasServidoresSancionados(req));
+            break;
+        case "estatal":
+            getDataPromisses.push(em.getDependenciasServidoresSancionados(req));
+            break;
+        default :
+            getDataPromisses.push(sfp.getDependenciasServidoresSancionados(req), em.getDependenciasServidoresSancionados(req));
+            break;
+    }
+
+    Promise.all(getDataPromisses).then(function (res) {
+        let instituciones = [];
+        res.forEach(item => {
+            instituciones = instituciones.concat(item.data);
+        })
+
+        instituciones.sort();
+        return response.status(200).send({"data": instituciones});
+    });
+
+
 });
 
 module.exports = router;
