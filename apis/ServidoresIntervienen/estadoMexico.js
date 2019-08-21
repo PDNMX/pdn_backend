@@ -41,8 +41,8 @@ let createDataEM = (item) => {
         apellidoDos: item.segundo_apellido ? item.segundo_apellido : '',
         servidor: (item.nombres ? item.nombres + ' ' : '') + (item.primer_apellido ? item.primer_apellido + ' ' : '') + (item.segundo_apellido ? item.segundo_apellido : ''),
         institucion: {
-            nombre: item.dependencia && item.dependencia.nombre ? item.dependencia.nombre : leyenda,
-            siglas: item.dependencia && item.dependencia.siglas ? item.dependencia.siglas : ''
+            nombre: item.institucion_dependencia && item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
+            siglas: item.institucion_dependencia && item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : ''
         },
         puesto: {
             nombre: item.puesto && item.puesto.nombre ? item.puesto.nombre : leyenda,

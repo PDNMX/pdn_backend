@@ -288,7 +288,8 @@ exports.getServidoresIntervienen = function (req) {
                         "data": res.data
                     }); */
                 /* resolve({"data": res.data, "totalRows": res.totalCount}); */
-                resolve({data: res.data, total: res.totalCount});
+                console.log(res)
+                resolve({"data": res.data, "totalRows": res.totalCount});
             }
         ).catch(err => {
             //console.log("Error: ", err);
