@@ -90,7 +90,7 @@ function getData(token,req) {
                 let info = JSON.parse(body);
                 resolve({
                     results: info.results,
-                    totalRows: info.paginacion.total
+                    totalRows: info.pagination.total
                 })
             }
         });
@@ -180,7 +180,7 @@ function getDataPrevio(token,req) {
                 resolve({
                     sujeto_obligado: "Estado de México",
                     estatus: true,
-                    totalRows: info.paginacion.total,
+                    totalRows: info.pagination.total,
                     clave_api:"em"
                 })
             }

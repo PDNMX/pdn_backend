@@ -47,7 +47,7 @@ router.post('/apis/s2',cors(),(req,response)=>{
 
     Promise.all(getDataPromisses).then(function (res) {
         let result = res[0];
-        console.log(res);
+        //console.log(res);
         return response.status(200).send({
             "data":result.data,
             "totalRows":result.totalRows
