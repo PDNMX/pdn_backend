@@ -178,7 +178,9 @@ exports.getDependenciasParticularesSancionados = function (req) {
                 });
             }
         }).catch(err => {
-            reject(err);
+            resolve({
+                "data":[]
+            })
         });
     })
 };

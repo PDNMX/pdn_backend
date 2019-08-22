@@ -56,16 +56,33 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
 });
 
 router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
-    sfp.getDependenciasParticularesSancionados(req).then(res=>{
-        return response.status(200).send(res);
-    }).catch(err=>{
-        return response.status(400).send(
-            {
-                "codigo": 400,
-                "mensaje": "Error al consultar funte de datos"
-            }
-        )
-    })
+    let nivel = req.body.nivel;
+    let getDataPromisses = [];
+
+    switch (nivel) {
+        case "federal":
+            getDataPromisses.push(sfp.getDependenciasParticularesSancionados(req));
+            break;
+        case "estatal":
+            getDataPromisses.push(em.getDependenciasParticularesSancionados(req));
+            break;
+        default :
+            getDataPromisses.push(em.getDependenciasParticularesSancionados(req),sfp.getDependenciasParticularesSancionados(req) );
+            break;
+    }
+
+    Promise.all(getDataPromisses).then(
+        function (res) {
+            let instituciones = [];
+            res.forEach(item => {
+                if(item.data)
+                    instituciones = instituciones.concat(item.data);
+            })
+
+            instituciones.sort();
+            return response.status(200).send({"data": instituciones});
+        }
+    );
 });
 
 

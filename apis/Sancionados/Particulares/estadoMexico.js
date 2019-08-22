@@ -82,6 +82,8 @@ function getData(token,req) {
             }
     };
     if(req.body.filtros.nombre_razon_social) options.qs.nombres = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.nombre) options.qs.institucion = req.body.filtros.nombre
+    if(req.body.filtros.expediente) options.qs.expediente = req.body.filtros.expediente
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
@@ -166,6 +168,9 @@ function getDataPrevio(token,req) {
     };
 
     if(req.body.filtros.nombre_razon_social) options.qs.nombres = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.nombre) options.qs.institucion = req.body.filtros.nombre
+    if(req.body.filtros.expediente) options.qs.expediente = req.body.filtros.expediente
+
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
@@ -186,5 +191,56 @@ function getDataPrevio(token,req) {
             }
         });
 
+    });
+}
+
+function getDependencias (token){
+    let options = {
+        method: 'GET',
+        url: process.env.ENDPOINT_EM_PARTICULARESSANCIONADOS_DEPENDENCIAS,
+        qs:
+            {
+                access_token: token
+            }
+    };
+
+
+    return new Promise((resolve, reject) => {
+        request(options, function (error, res, body) {
+            if (error) reject;
+            if (body) {
+                let info = JSON.parse(body);
+                let dataAux = info.map(item => {
+                    return item.nombre
+                });
+                resolve({
+                    instituciones:dataAux,
+                })
+            }
+        });
+
+    });
+}
+exports.getDependenciasParticularesSancionados = function (req) {
+    return new Promise((resolve, reject) => {
+        getToken().then(res => {
+            let token = res.token;
+            getDependencias(token).then(resultado => {
+                let limpio = new Set(resultado.instituciones);
+                resolve(
+                    {
+                        "data":  [...limpio],
+                    })
+            }).catch(error => {
+                resolve({
+                    "data":[]
+                })
+            });
+
+        }).catch(err => {
+            resolve({
+                data:[]
+            })
+        });
     });
 }
