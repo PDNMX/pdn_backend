@@ -67,19 +67,22 @@ router.post('/apis/getDependenciasServidores', cors(), (req, response) => {
             getDataPromisses.push(em.getDependenciasServidoresSancionados(req));
             break;
         default :
-            getDataPromisses.push(sfp.getDependenciasServidoresSancionados(req), em.getDependenciasServidoresSancionados(req));
+            getDataPromisses.push(em.getDependenciasServidoresSancionados(req),sfp.getDependenciasServidoresSancionados(req) );
             break;
     }
 
-    Promise.all(getDataPromisses).then(function (res) {
-        let instituciones = [];
+    Promise.all(getDataPromisses).then(
+        function (res) {
+            let instituciones = [];
         res.forEach(item => {
-            instituciones = instituciones.concat(item.data);
+            if(item.data)
+                instituciones = instituciones.concat(item.data);
         })
 
         instituciones.sort();
         return response.status(200).send({"data": instituciones});
-    });
+    }
+    );
 
 
 });

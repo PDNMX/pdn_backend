@@ -244,14 +244,15 @@ exports.getDependenciasServidoresSancionados = function (req) {
                         "data":  [...limpio],
                     })
             }).catch(error => {
-                reject(error)
+                resolve({
+                    "data":[]
+                })
             });
 
         }).catch(err => {
-            return response.status(400).send(
-                {
-                    "error": err
-                })
+           resolve({
+               data:[]
+           })
         });
     });
 }

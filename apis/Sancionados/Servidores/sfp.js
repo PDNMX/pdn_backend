@@ -137,6 +137,7 @@ exports.getServidoresSancionados = function (req) {
         })
     })
 };
+
 exports.getDependenciasServidoresSancionados = function (req) {
     return new Promise((resolve, reject) => {
         client
@@ -148,7 +149,7 @@ exports.getDependenciasServidoresSancionados = function (req) {
                         institucion_dependencia{
                           nombre                       
                         }
-                
+                 
                     }
                     }
                              `
@@ -162,8 +163,10 @@ exports.getDependenciasServidoresSancionados = function (req) {
                     "data": [...limpio]
                 });
             }
-        }).catch(err => {
-            reject(err);
+        }).catch(()=>{
+            resolve({
+                "data":[]
+            })
         });
     })
 };
