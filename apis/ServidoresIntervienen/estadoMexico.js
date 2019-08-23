@@ -121,8 +121,8 @@ function getDataPrevio(token,req) {
     };
 
     if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
-    if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.primer_apellido
-    if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.segundo_apellido
+    if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.primer_apellido
+    if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.segundo_apellido
     if(req.body.filtros.institucion) options.qs.institucion = req.body.filtros.institucion
 
     /* console.log(options); */
@@ -162,8 +162,8 @@ function getData(token,req) {
             }
     };
     if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
-    if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.primer_apellido
-    if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.segundo_apellido
+    if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.primer_apellido
+    if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.segundo_apellido
     if(req.body.filtros.institucion) options.qs.institucion = req.body.filtros.institucion
 
     return new Promise((resolve, reject) => {
