@@ -132,7 +132,13 @@ exports.getParticularesSancionados =  function (req) {
 
 exports.getPrevioParticularesSancionados =  function (req) {
     return new Promise((resolve, reject) => {
-        getToken().then(res => {
+        resolve({
+            sujeto_obligado: "Estado de México",
+            estatus:false,
+            totalRows: 0,
+            clave_api:"em"
+        })
+       /* getToken().then(res => {
             let token = res.token;
             getDataPrevio(token,req).then(resultado => {
                 resolve(
@@ -150,6 +156,8 @@ exports.getPrevioParticularesSancionados =  function (req) {
                 clave_api:"em"
             })
         });
+
+        */
     });
 }
 

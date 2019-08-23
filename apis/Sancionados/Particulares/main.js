@@ -67,7 +67,8 @@ router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
             getDataPromisses.push(em.getDependenciasParticularesSancionados(req));
             break;
         default :
-            getDataPromisses.push(em.getDependenciasParticularesSancionados(req),sfp.getDependenciasParticularesSancionados(req) );
+            //getDataPromisses.push(em.getDependenciasParticularesSancionados(req),sfp.getDependenciasParticularesSancionados(req) );
+            getDataPromisses.push(sfp.getDependenciasParticularesSancionados(req) );
             break;
     }
 
