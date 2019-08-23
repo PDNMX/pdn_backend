@@ -123,8 +123,7 @@ function getDataPrevio(token,req) {
     if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
     if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.primer_apellido
     if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.segundo_apellido
-    if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc
-    if(req.body.filtros.curp) options.qs.curp = req.body.filtros.curp 
+    if(req.body.filtros.institucion) options.qs.institucion = req.body.filtros.institucion
 
     /* console.log(options); */
     return new Promise((resolve, reject) => {
@@ -165,8 +164,7 @@ function getData(token,req) {
     if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
     if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.primer_apellido
     if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.segundo_apellido
-    if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc
-    if(req.body.filtros.curp) options.qs.curp = req.body.filtros.curp 
+    if(req.body.filtros.institucion) options.qs.institucion = req.body.filtros.institucion
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {

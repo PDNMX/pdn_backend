@@ -232,7 +232,7 @@ exports.getPrevioServidoresIntervienen = function (req) {
                 }
             }
         ).catch(err => {
-            console.log("Error: ", err);
+            //console.log("Error: ", err);
             resolve({
                 sujeto_obligado: SO,
                 estatus: false,
