@@ -232,3 +232,53 @@ exports.getServidoresIntervienen =  function (req) {
         });
     });
 }
+
+
+function getDependencias (token){
+    let options = {
+        method: 'GET',
+        url: process.env.ENDPOINT_EM_S2_DEPENDENCIAS,
+        qs:
+            {
+                access_token: token
+            }
+    };
+    return new Promise((resolve, reject) => {
+        request(options, function (error, res, body) {
+            if (error) reject;
+            if (body) {
+                let info = JSON.parse(body);
+                let dataAux = info.map(item => {
+                    return item.nombre
+                });
+                resolve({
+                    instituciones:dataAux,
+                })
+            }
+        });
+
+    });
+}
+exports.getDependenciasS2 = function (req) {
+    return new Promise((resolve, reject) => {
+        getToken().then(res => {
+            let token = res.token;
+            getDependencias(token).then(resultado => {
+                let limpio = new Set(resultado.instituciones);
+                resolve(
+                    {
+                        "data":  [...limpio],
+                    })
+            }).catch(error => {
+                resolve({
+                    "data":[]
+                })
+            });
+
+        }).catch(err => {
+           resolve({
+               data:[]
+           })
+        });
+    });
+}

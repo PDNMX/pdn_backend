@@ -57,15 +57,30 @@ router.post('/apis/s2',cors(),(req,response)=>{
 });
 
 router.get('/apis/s2/dependencias', cors(), (req, response) => {
-    sfp.getDependencias(req).then(res=>{
-        return response.status(200).send(res);
-    }).catch(err =>{
-        return response.status(400).send(
-            {
-                "codigo": 400,
-                "mensaje": "Error al consultar la fuente de datos"
-            }
-        )
-    })
+    let nivel = req.body.nivel;
+    let getDataPromisses = [];
+    switch (nivel) {
+        case "federal":
+            getDataPromisses.push(sfp.getDependencias(req));
+            break;
+        case "estatal":
+            getDataPromisses.push(em.getDependenciasS2(req));
+            break;
+        default :
+            getDataPromisses.push(em.getDependenciasS2(req),sfp.getDependencias(req) );
+            break;
+    }
+
+    Promise.all(getDataPromisses).then(
+        function (res) {
+            console.log(res)
+            let instituciones = [];
+        res.forEach(item => {
+            if(item.data)
+                instituciones = instituciones.concat(item.data);
+        })
+        instituciones.sort();
+        return response.status(200).send({"data": instituciones});
+    });
 }); 
 module.exports = router;
