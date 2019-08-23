@@ -322,15 +322,21 @@ exports.getDependencias = function (req, response) {
                 let dataAux = res.data.dependencias.results.map(item => {
                     return item.nombre;
                 });
+                let limpio = new Set(dataAux)
                 resolve({
-                    "data": dataAux
+                    "data": [...limpio]
                 });
-            }
+                /* resolve({
+                    "data": dataAux
+                }); */
+            } 
 
 
         }).catch(err => {
             console.error(err);
-            reject(err);
+            resolve({
+                "data":[]
+            })
         });
     });
 };
