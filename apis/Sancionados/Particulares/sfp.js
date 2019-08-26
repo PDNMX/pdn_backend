@@ -18,6 +18,7 @@ let counter = 0;
 let createData = (item) => {
     counter += 1;
     let leyenda = "NO EXISTE DATO EN LA BASE DE DATOS SFP";
+    console.log("item",item);
     return {
         id: counter,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
