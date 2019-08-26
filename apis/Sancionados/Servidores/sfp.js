@@ -21,22 +21,22 @@ let createData = (item) => {
     counter += 1;
     return {
         id: counter,
-        nombre: item.nombres ? item.nombres : '',
-        apellidoUno: item.primer_apellido ? item.primer_apellido : '',
-        apellidoDos: item.segundo_apellido ? item.segundo_apellido : '',
+        nombre: item.nombres ? item.nombres.toUpperCase() : '',
+        apellidoUno: item.primer_apellido ? item.primer_apellido.toUpperCase() : '',
+        apellidoDos: item.segundo_apellido ? item.segundo_apellido.toUpperCase() : '',
         institucion: item.institucion_dependencia ? {
-            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
-            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
+            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre.toUpperCase() : leyenda,
+            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas.toUpperCase() : leyenda
         } : leyenda,
-        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
+        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora.toUpperCase() : leyenda,
         expediente: item.expediente ? item.expediente : leyenda,
-        tipo_sancion: item.tipo_sancion ? item.tipo_sancion : leyenda,
-        causa: item.causa ? item.causa : leyenda,
+        tipo_sancion: item.tipo_sancion ? item.tipo_sancion.toUpperCase() : leyenda,
+        causa: item.causa ? item.causa.toUpperCase() : leyenda,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
-        rfc: item.rfc ? item.rfc : leyenda,
-        curp: item.curp ? item.curp : leyenda,
-        genero: item.genero ? item.genero : leyenda,
-        tipo_falta: item.tipo_falta ? item.tipo_falta : leyenda,
+    //    rfc: item.rfc ? item.rfc : leyenda,
+      //  curp: item.curp ? item.curp : leyenda,
+        //genero: item.genero ? item.genero : leyenda,
+        tipo_falta: item.tipo_falta ? item.tipo_falta.toUpperCase() : leyenda,
         resolucion: item.resolucion ? {
             fecha_notificacion: item.resolucion.fecha_notificacion ? item.resolucion.fecha_notificacion : leyenda
         } : leyenda,
@@ -47,9 +47,9 @@ let createData = (item) => {
         inhabilitacion: item.inhabilitacion ? {
             fecha_inicial: (item.inhabilitacion.fecha_inicial && item.inhabilitacion.fecha_inicial.trim()) ? item.inhabilitacion.fecha_inicial : leyenda,
             fecha_final: (item.inhabilitacion.fecha_final && item.inhabilitacion.fecha_final.trim()) ? item.inhabilitacion.fecha_final : leyenda,
-            observaciones: (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim()) ? item.inhabilitacion.observaciones : leyenda
+            observaciones: (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim()) ? item.inhabilitacion.observaciones.toUpperCase() : leyenda
         } : leyenda,
-        puesto: item.puesto ? item.puesto : leyenda
+        puesto: item.puesto ? item.puesto.toUpperCase() : leyenda
     };
 };
 

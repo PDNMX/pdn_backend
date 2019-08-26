@@ -9,22 +9,22 @@ let createDataEM = (item) =>{
     let leyenda = "NO EXISTE DATO EN LA BASE DEL ESTADO DE MÉXICO";
     return {
         id: counter,
-        nombre: item.servidor_publico_sancionado && item.servidor_publico_sancionado.nombres ? item.servidor_publico_sancionado.nombres : '',
-        apellidoUno: item.servidor_publico_sancionado && item.servidor_publico_sancionado.primer_apellido ? item.servidor_publico_sancionado.primer_apellido : '',
-        apellidoDos: item.servidor_publico_sancionado && item.servidor_publico_sancionado.segundo_apellido ? item.servidor_publico_sancionado.segundo_apellido : '',
+        nombre: item.servidor_publico_sancionado && item.servidor_publico_sancionado.nombres ? item.servidor_publico_sancionado.nombres.toUpperCase() : '',
+        apellidoUno: item.servidor_publico_sancionado && item.servidor_publico_sancionado.primer_apellido ? item.servidor_publico_sancionado.primer_apellido.toUpperCase() : '',
+        apellidoDos: item.servidor_publico_sancionado && item.servidor_publico_sancionado.segundo_apellido ? item.servidor_publico_sancionado.segundo_apellido.toUpperCase() : '',
         institucion: item.institucion_dependencia ? {
-            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
-            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
+            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre.toUpperCase() : leyenda,
+            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas.toUpperCase() : leyenda
         } : leyenda,
-        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
+        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora.toUpperCase() : leyenda,
         expediente: item.expediente ? item.expediente : leyenda,
-        tipo_sancion: item.tipo_sancion ? item.tipo_sancion : leyenda,
-        causa: item.causa_motivo_hechos ? item.causa_motivo_hechos : leyenda,
+        tipo_sancion: (item.tipo_sancion && item.tipo_sancion.length>0) ? (item.tipo_sancion[0]?item.tipo_sancion[0].toUpperCase():leyenda) : leyenda,
+        causa: item.causa_motivo_hechos ? item.causa_motivo_hechos.toUpperCase() : leyenda,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
-        rfc: item.servidor_publico_sancionado && item.servidor_publico_sancionado.rfc ? item.servidor_publico_sancionado.rfc : leyenda,
-        curp: item.servidor_publico_sancionado && item.servidor_publico_sancionado.curp ? item.servidor_publico_sancionado.curp : leyenda,
-        genero: item.servidor_publico_sancionado && item.servidor_publico_sancionado.genero ? item.servidor_publico_sancionado.genero : leyenda,
-        tipo_falta: item.tipo_falta ? item.tipo_falta : leyenda,
+        //rfc: item.servidor_publico_sancionado && item.servidor_publico_sancionado.rfc ? item.servidor_publico_sancionado.rfc : leyenda,
+        //curp: item.servidor_publico_sancionado && item.servidor_publico_sancionado.curp ? item.servidor_publico_sancionado.curp : leyenda,
+        //genero: item.servidor_publico_sancionado && item.servidor_publico_sancionado.genero ? item.servidor_publico_sancionado.genero : leyenda,
+        tipo_falta: item.tipo_falta && item.tipo_falta.length>0? item.tipo_falta : leyenda,
         resolucion: item.resolucion ? {
             fecha_notificacion: item.resolucion.fecha_notificacion ? item.resolucion.fecha_notificacion : leyenda
         } : leyenda,
@@ -37,7 +37,7 @@ let createDataEM = (item) =>{
             fecha_final: (item.inhabilitacion.fecha_final && item.inhabilitacion.fecha_final.trim()) ? item.inhabilitacion.fecha_final : leyenda,
             observaciones: (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim()) ? item.inhabilitacion.observaciones : leyenda
         } : leyenda,
-        puesto: item.servidor_publico_sancionado && item.servidor_publico_sancionado.puesto ? item.servidor_publico_sancionado.puesto : leyenda
+        puesto: item.servidor_publico_sancionado && item.servidor_publico_sancionado.puesto ? item.servidor_publico_sancionado.puesto.toUpperCase() : leyenda
     };
 };
 
