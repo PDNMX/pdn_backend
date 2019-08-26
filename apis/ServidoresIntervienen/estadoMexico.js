@@ -10,25 +10,32 @@ let createDataEM = (item) => {
         switch (item) {
             case 'T':
                 return 'TÉCNICA';
-                break;
             case 'RE' :
                 return 'RESPONSABLE DE LA EJECUCIÓN DE LOS TRABAJOS';
-                break;
             case 'RC' :
                 return 'RESPONSABLE DE LA CONTRATACIÓN';
-                break;
             case 'O' :
                 return 'OTRA';
-                break;
             case 'C' :
                 return 'CONTRATANTE';
-                break;
             case 'R' :
                 return 'REQUIRENTE';
-                break;
             default :
                 return leyenda;
-                break;
+        }
+    });
+    let tipo_procedimiento = item.tipo_procedimiento.map(item => {
+        switch (item) {
+            case '1':
+                return 'CONTRATACIONES PÚBLICAS';
+            case '2' :
+                return 'CONCESIONES, LICENCIAS, PERMISOS, AUTORIZACIONES Y PRÓRROGAS';
+            case '3' :
+                return 'ASIGNACIÓN Y EMISIÓN DE DICTÁMENES DE AVALÚOS NACIONALES';
+            case '4' :
+                return 'OTRA';
+            default :
+                return leyenda;
         }
     }) 
     let nivel = item.nivel_responsabilidad === 'A' ? "ATENCIÓN" : item.nivel_responsabilidad === 'R' ? "RESOLUCIÓN" : "TRAMITACIÓN";
@@ -64,7 +71,7 @@ let createDataEM = (item) => {
             ramo: item.ramo ? item.ramo : leyenda
         },
         nivel_responsabilidad: item.nivel_responsabilidad ? item.nivel_responsabilidad : leyenda,
-        tipo_actos: item.tipo_actos ? item.tipo_actos : leyenda,
+        tipo_actos: tipo_procedimiento.length && tipo_procedimiento.length > 0 ? tipo_procedimiento : leyenda,
         superior_inmediato: {
             nombre: item.superior_inmediato && item.superior_inmediato.nombres ? item.superior_inmediato.nombres : leyenda,
             primer_apellido: item.superior_inmediato && item.superior_inmediato.primer_apellido ? item.superior_inmediato.primer_apellido : leyenda,
