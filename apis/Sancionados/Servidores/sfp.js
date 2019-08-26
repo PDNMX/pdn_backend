@@ -87,11 +87,20 @@ let query = gql`
 
 exports.getPrevioServidoresSancionados = function (req) {
     return new Promise((resolve, reject) => {
+        let filtros = {};
+        if (req.body.filtros.nombres) filtros.nombres = "%"+req.body.filtros.nombres.toUpperCase()+"%";
+        if (req.body.filtros.primer_apellido) filtros.primer_apellido = "%"+req.body.filtros.primer_apellido.toUpperCase() +"%" ;
+        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = "%"+req.body.filtros.segundo_apellido.toUpperCase()+"%";
+        if (req.body.filtros.rfc) filtros.rfc =  "%"+req.body.filtros.rfc.toUpperCase()+"%";
+        if (req.body.filtros.curp) filtros.curp =  "%"+req.body.filtros.curp.toUpperCase()+"%" ;
+        if (req.body.filtros.nombre) filtros.nombre =  "%"+req.body.filtros.nombre.toUpperCase()+"%";
+
+        console.log("filtros: ",filtros);
         client.query({
             variables: {
                 "limit": 1,
                 "offset": 0,
-                "filtros": req.body.filtros
+                "filtros": filtros
             },
             query: query
         }).then(response => {
@@ -117,11 +126,18 @@ exports.getPrevioServidoresSancionados = function (req) {
 
 exports.getServidoresSancionados = function (req) {
     return new Promise((resolve, reject) => {
+        let filtros = {};
+        if (req.body.filtros.nombres) filtros.nombres = "%"+req.body.filtros.nombres.toUpperCase()+"%";
+        if (req.body.filtros.primer_apellido) filtros.primer_apellido = "%"+req.body.filtros.primer_apellido.toUpperCase() +"%" ;
+        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = "%"+req.body.filtros.segundo_apellido.toUpperCase()+"%";
+        if (req.body.filtros.rfc) filtros.rfc =  "%"+req.body.filtros.rfc.toUpperCase()+"%";
+        if (req.body.filtros.curp) filtros.curp =  "%"+req.body.filtros.curp.toUpperCase()+"%" ;
+        if (req.body.filtros.nombre) filtros.nombre =  "%"+req.body.filtros.nombre.toUpperCase()+"%";
         client.query({
             variables: {
                 "limit" : req.body && req.body.limit ? req.body.limit : 200,
                 "offset" : req.body && req.body.offset ? req.body.offset : 0,
-                "filtros": req.body.filtros
+                "filtros": filtros
             },
             query: query
         }).then(response => {
@@ -131,7 +147,7 @@ exports.getServidoresSancionados = function (req) {
                     return createData(item)
                 });
             }
-            resolve({data: dataAux, total: response.data.total});
+            resolve({data: dataAux, totalRows: response.data.total});
         }).catch(err => {
             reject(err)
         })

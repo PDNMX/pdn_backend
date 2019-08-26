@@ -95,11 +95,16 @@ let query = gql`
 
 exports.getPrevioParticularesSancionados = function (req) {
     return new Promise((resolve, reject) => {
+        let filtros = {};
+
+        if (req.body.filtros.nombre_razon_social) filtros.nombre_razon_social = "%"+req.body.filtros.nombre_razon_social+"%";
+        if (req.body.filtros.numero_expediente) filtros.numero_expediente = "%"+req.body.filtros.numero_expediente+"%";
+        if (req.body.filtros.nombre) filtros.nombre = "%"+req.body.filtros.nombre+"%";
         client
             .query({
                 variables:
                     {
-                        "filtros": req.body.filtros,
+                        "filtros": filtros,
                         "limit": 1,
                         "offset": req.body.offset
                     },
@@ -126,11 +131,16 @@ exports.getPrevioParticularesSancionados = function (req) {
 
 exports.getParticularesSancionados = function (req) {
     return new Promise((resolve, reject) => {
+        let filtros = {};
+
+        if (req.body.filtros.nombre_razon_social) filtros.nombre_razon_social = "%"+req.body.filtros.nombre_razon_social+"%";
+        if (req.body.filtros.numero_expediente) filtros.numero_expediente = "%"+req.body.filtros.numero_expediente+"%";
+        if (req.body.filtros.nombre) filtros.nombre = "%"+req.body.filtros.nombre+"%";
         client
             .query({
                 variables:
                     {
-                        "filtros": req.body.filtros,
+                        "filtros": filtros,
                         "limit": req.body.limit,
                         "offset": req.body.offset
                     },
