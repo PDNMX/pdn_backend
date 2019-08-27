@@ -187,12 +187,13 @@ let query = gql`
 }; */
 exports.getPrevioServidoresIntervienen = function (req) {
     return new Promise((resolve, reject) => {
+        console.log(filtros)
         let filtros = {};
         if (req.body.filtros.nombres) filtros.nombres = req.body.filtros.nombres;
         if (req.body.filtros.primer_apellido) filtros.primer_apellido = req.body.filtros.primer_apellido;
         if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = req.body.filtros.segundo_apellido;
         if (req.body.filtros.institucion) filtros.institucion =  req.body.filtros.institucion;
-        if (req.body.filtros.tipo_procedimiento) filtros.tipo_actos =  req.body.filtros.tipo_procedimiento;
+        if (req.body.filtros.procedimiento) filtros.tipo_actos =  req.body.filtros.procedimiento;
 
         /* console.log("filtros: ",filtros); */
         client.query({
@@ -229,7 +230,7 @@ exports.getServidoresIntervienen = function (req) {
         if (req.body.filtros.primer_apellido) filtros.primer_apellido = req.body.filtros.primer_apellido;
         if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = req.body.filtros.segundo_apellido;
         if (req.body.filtros.institucion) filtros.institucion =  req.body.filtros.institucion;
-        if (req.body.filtros.tipo_procedimiento) filtros.tipo_actos =  req.body.filtros.tipo_procedimiento;
+        if (req.body.filtros.procedimiento) filtros.tipo_actos =  req.body.filtros.procedimiento;
         client.query({
             variables: {
                 "first": req.body && req.body.limit ? req.body.limit : 10,

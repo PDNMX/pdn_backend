@@ -131,6 +131,24 @@ function getDataPrevio(token,req) {
     if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.primer_apellido
     if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.segundo_apellido
     if(req.body.filtros.institucion) options.qs.institucion = req.body.filtros.institucion
+    if(req.body.filtros.procedimiento) {
+        switch (req.body.filtros.procedimiento) {
+            case 'CONTRATACIONES':
+                options.qs.tipo_procedimiento = 1;
+                break;
+            case 'CONCESIONES' :
+                options.qs.tipo_procedimiento = 2;
+                break;
+            case 'ENAJENACIONES' :
+                options.qs.tipo_procedimiento = 3;
+                break;
+            case 'DICTAMENES' :
+                options.qs.tipo_procedimiento = 4;
+                break;
+            default :
+                options.qs.tipo_procedimiento = '';
+        }
+    }
 
     /* console.log(options); */
     return new Promise((resolve, reject) => {
@@ -172,7 +190,24 @@ function getData(token,req) {
     if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.primer_apellido
     if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.segundo_apellido
     if(req.body.filtros.institucion) options.qs.institucion = req.body.filtros.institucion
-
+    if(req.body.filtros.procedimiento) {
+        switch (req.body.filtros.procedimiento) {
+            case 'CONTRATACIONES':
+                options.qs.tipo_procedimiento = 1;
+                break;
+            case 'CONCESIONES' :
+                options.qs.tipo_procedimiento = 2;
+                break;
+            case 'ENAJENACIONES' :
+                options.qs.tipo_procedimiento = 3;
+                break;
+            case 'DICTAMENES' :
+                options.qs.tipo_procedimiento = 4;
+                break;
+            default :
+                options.qs.tipo_procedimiento = '';
+        }
+    }
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
             if (error) reject();
