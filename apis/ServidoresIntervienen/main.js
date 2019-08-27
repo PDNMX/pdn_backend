@@ -73,7 +73,7 @@ router.get('/apis/s2/dependencias', cors(), (req, response) => {
 
     Promise.all(getDataPromisses).then(
         function (res) {
-            console.log(res)
+            /* console.log(res) */
             let instituciones = [];
         res.forEach(item => {
             if(item.data)
