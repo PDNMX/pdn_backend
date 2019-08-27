@@ -122,6 +122,7 @@ let query = gql`
                   }
                   id_ramo
                   ramo
+                  nombrecompleto
                   nombres
                   primer_apellido
                   segundo_apellido
