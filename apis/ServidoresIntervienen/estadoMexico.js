@@ -157,7 +157,8 @@ function getDataPrevio(token,req) {
                 sujeto_obligado: "Estado de México",
                 estatus:false,
                 totalRows: 0,
-                clave_api:"em"
+                clave_api:"em",
+                nivel: "Estatal"
             });
             if (body) {
                 let info = JSON.parse(body)
@@ -165,7 +166,8 @@ function getDataPrevio(token,req) {
                     sujeto_obligado: "Estado de México",
                     estatus: true,
                     totalRows: info.pagination.total,
-                    clave_api:"em"
+                    clave_api:"em",
+                    nivel: "Estatal"
                 })
             }
         });

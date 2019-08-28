@@ -210,7 +210,8 @@ exports.getPrevioServidoresIntervienen = function (req) {
                     sujeto_obligado: SO,
                     estatus: true,
                     totalRows: response.data.servidor_publico.totalCount,
-                    clave_api: CLAVE_API
+                    clave_api: CLAVE_API,
+                    nivel: "Federal"
                 })
             }
         }).catch(err => {
@@ -218,7 +219,8 @@ exports.getPrevioServidoresIntervienen = function (req) {
                 sujeto_obligado: SO,
                 estatus: false,
                 totalRows: 0,
-                clave_api: CLAVE_API
+                clave_api: CLAVE_API,
+                nivel: "Federal"
             })
         })
     })
