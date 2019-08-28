@@ -95,7 +95,6 @@ exports.getPrevioServidoresSancionados = function (req) {
         if (req.body.filtros.curp) filtros.curp =  "%"+req.body.filtros.curp.toUpperCase()+"%" ;
         if (req.body.filtros.nombre) filtros.nombre =  "%"+req.body.filtros.nombre.toUpperCase()+"%";
 
-        console.log("filtros: ",filtros);
         client.query({
             variables: {
                 "limit": 1,
@@ -109,7 +108,8 @@ exports.getPrevioServidoresSancionados = function (req) {
                     sujeto_obligado: SO,
                     estatus: true,
                     totalRows: response.data.total,
-                    clave_api: CLAVE_API
+                    clave_api: CLAVE_API,
+                    nivel: "Federal"
                 })
             }
         }).catch(err => {
@@ -117,7 +117,8 @@ exports.getPrevioServidoresSancionados = function (req) {
                 sujeto_obligado: SO,
                 estatus: false,
                 totalRows: 0,
-                clave_api: CLAVE_API
+                clave_api: CLAVE_API,
+                nivel: "Federal"
             })
         })
     })

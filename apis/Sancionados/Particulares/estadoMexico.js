@@ -136,7 +136,8 @@ exports.getPrevioParticularesSancionados =  function (req) {
             sujeto_obligado: "Estado de México",
             estatus:false,
             totalRows: 0,
-            clave_api:"em"
+            clave_api:"em",
+            nivel: "Estatal"
         })
        /* getToken().then(res => {
             let token = res.token;

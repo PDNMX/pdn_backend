@@ -116,7 +116,8 @@ exports.getPrevioParticularesSancionados = function (req) {
                     sujeto_obligado: SO,
                     estatus: true,
                     totalRows: res.data.total,
-                    clave_api: CLAVE_API
+                    clave_api: CLAVE_API,
+                    nivel: "Federal"
                 })
             }
         }).catch(err => {
@@ -124,7 +125,8 @@ exports.getPrevioParticularesSancionados = function (req) {
                 sujeto_obligado: SO,
                 estatus: false,
                 totalRows: 0,
-                clave_api: CLAVE_API
+                clave_api: CLAVE_API,
+                nivel: "Federal"
             })
         });
     });
