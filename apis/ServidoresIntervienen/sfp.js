@@ -55,12 +55,19 @@ let createData = (item) => {
 
     let nivel = item.nivel_responsabilidad === 'A' ? "ATENCIÓN" : item.nivel_responsabilidad === 'R' ? "RESOLUCIÓN" : "TRAMITACIÓN";
     counter += 1;
+    // fix a nombres de SFP
+    let nombreCompleto = ''
+    if (item.nombrecompleto) {
+        nombreCompleto = item.nombrecompleto
+    } else {
+        nombreCompleto = (item.nombres ? item.nombres + ' ' : '') + (item.primer_apellido ? item.primer_apellido + ' ' : '') + (item.segundo_apellido ? item.segundo_apellido : '')
+    }
     return {
         id: counter,
         nombre: item.nombres ? item.nombres : '',
         apellidoUno: item.primer_apellido ? item.primer_apellido : '',
         apellidoDos: item.segundo_apellido ? item.segundo_apellido : '',
-        servidor: (item.nombres ? item.nombres + ' ' : '') + (item.primer_apellido ? item.primer_apellido + ' ' : '') + (item.segundo_apellido ? item.segundo_apellido : ''),
+        servidor: nombreCompleto,
         institucion: {
             nombre: item.dependencia && item.dependencia.nombre ? item.dependencia.nombre : leyenda,
             siglas: item.dependencia && item.dependencia.siglas ? item.dependencia.siglas : ''
@@ -115,6 +122,7 @@ let query = gql`
                   }
                   id_ramo
                   ramo
+                  nombrecompleto
                   nombres
                   primer_apellido
                   segundo_apellido
@@ -180,122 +188,69 @@ let query = gql`
 }; */
 exports.getPrevioServidoresIntervienen = function (req) {
     return new Promise((resolve, reject) => {
-        let variables = {
-            "first": req.body && req.body.limit ? req.body.limit : 200,
-            "start": req.body && req.body.offset ? req.body.offset : 1
-        };
+        console.log(filtros)
+        let filtros = {};
+        if (req.body.filtros.nombres) filtros.nombres = req.body.filtros.nombres;
+        if (req.body.filtros.primer_apellido) filtros.primer_apellido = req.body.filtros.primer_apellido;
+        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = req.body.filtros.segundo_apellido;
+        if (req.body.filtros.institucion) filtros.institucion =  req.body.filtros.institucion;
+        if (req.body.filtros.procedimiento) filtros.tipo_actos =  req.body.filtros.procedimiento;
 
-        let iterar = req.body.iterar;
-        if (req.body && req.body.filtros) variables.filtros = req.body.filtros;
-        console.log(req.body)
-        function getPaginatedElements(variables, elements = [], itera) {
-            return new Promise((resolve, reject) => {
-                    client.query({
-                        variables: variables,
-                        query: query
-                    }).then(response => {
-                        const newElements = elements.concat(response.data.servidor_publico.results.map(item => {
-                            return createData(item)
-                        }));
-                        if (response.data.servidor_publico.results.length === 0) {
-                            resolve({data: newElements, totalCount: response.data.servidor_publico.totalCount});
-                        } else {
-                            if (response.data.servidor_publico.pageInfo.hasNextPage && itera) {
-                                variables.start = variables.start + variables.first;
-                                getPaginatedElements(variables, newElements, itera)
-                                    .then(resolve)
-                                    .catch(reject)
-                            } else
-                                resolve({data: newElements, totalCount: response.data.servidor_publico.totalCount});
-                        }
-                    }).catch(reject)
-                }
-            );
-        }
-
-        let aux = [];
-        getPaginatedElements(variables, aux, iterar).then(
-            res => {
-                /* return response.status(200).send(
-                    {
-                        "totalRows": res.totalCount,
-                        "data": res.data
-                    }); */
-                /* resolve({"data": res.data, "totalRows": res.totalCount}); */
-                if (res && res.data) {
-                    resolve({
-                        sujeto_obligado: SO,
-                        estatus: true,
-                        totalRows: res.totalCount,
-                        clave_api: CLAVE_API
-                    });
-                }
+        /* console.log("filtros: ",filtros); */
+        client.query({
+            variables: {
+                "first": 200,
+                "start": 1,
+                "filtros": filtros
+            },
+            query: query
+        }).then(response => {
+            if (response && response.data) {
+                resolve({
+                    sujeto_obligado: SO,
+                    estatus: true,
+                    totalRows: response.data.servidor_publico.totalCount,
+                    clave_api: CLAVE_API
+                })
             }
-        ).catch(err => {
-            //console.log("Error: ", err);
+        }).catch(err => {
             resolve({
                 sujeto_obligado: SO,
                 estatus: false,
                 totalRows: 0,
                 clave_api: CLAVE_API
             })
-            
-        });
-    });
+        })
+    })
 };
 
 exports.getServidoresIntervienen = function (req) {
     return new Promise((resolve, reject) => {
-        let variables = {
-            "first": req.body && req.body.limit ? req.body.limit : 200,
-            "start": req.body && req.body.offset ? req.body.offset : 1
-        };
-
-        let iterar = req.body.iterar;
-        if (req.body && req.body.filtros) variables.filtros = req.body.filtros;
-
-        function getPaginatedElements(variables, elements = [], itera) {
-            return new Promise((resolve, reject) => {
-                    client.query({
-                        variables: variables,
-                        query: query
-                    }).then(response => {
-                        const newElements = elements.concat(response.data.servidor_publico.results.map(item => {
-                            return createData(item)
-                        }));
-                        if (response.data.servidor_publico.results.length === 0) {
-                            resolve({data: newElements, totalCount: response.data.servidor_publico.totalCount});
-                        } else {
-                            if (response.data.servidor_publico.pageInfo.hasNextPage && itera) {
-                                variables.start = variables.start + variables.first;
-                                getPaginatedElements(variables, newElements, itera)
-                                    .then(resolve)
-                                    .catch(reject)
-                            } else
-                                resolve({data: newElements, totalCount: response.data.servidor_publico.totalCount});
-                        }
-                    }).catch(reject)
-                }
-            );
-        }
-
-        let aux = [];
-        getPaginatedElements(variables, aux, iterar).then(
-            res => {
-                /* return response.status(200).send(
-                    {
-                        "totalRows": res.totalCount,
-                        "data": res.data
-                    }); */
-                /* resolve({"data": res.data, "totalRows": res.totalCount}); */
-                console.log(res)
-                resolve({"data": res.data, "totalRows": res.totalCount});
+        let filtros = {};
+        if (req.body.filtros.nombres) filtros.nombres = req.body.filtros.nombres;
+        if (req.body.filtros.primer_apellido) filtros.primer_apellido = req.body.filtros.primer_apellido;
+        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = req.body.filtros.segundo_apellido;
+        if (req.body.filtros.institucion) filtros.institucion =  req.body.filtros.institucion;
+        if (req.body.filtros.procedimiento) filtros.tipo_actos =  req.body.filtros.procedimiento;
+        client.query({
+            variables: {
+                "first": req.body && req.body.limit ? req.body.limit : 10,
+                "start": req.body && req.body.offset ? req.body.offset : 0,
+                "filtros": filtros
+            },
+            query: query
+        }).then(response => {
+            let dataAux = [];
+            if(response.data && response.data.servidor_publico.results){
+                dataAux = response.data.servidor_publico.results.map(item => {
+                    return createData(item)
+                });
             }
-        ).catch(err => {
-            //console.log("Error: ", err);
+            resolve({data: dataAux, totalRows: response.data.servidor_publico.totalCount});
+        }).catch(err => {
             reject(err)
-        });
-    });
+        })
+    })    
 };
 
 exports.getDependencias = function (req, response) {
