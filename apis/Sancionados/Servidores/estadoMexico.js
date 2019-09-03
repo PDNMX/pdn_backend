@@ -113,8 +113,8 @@ function getDataPrevio(token,req) {
     };
 
     if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
-    if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.primer_apellido
+    if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.segundo_apellido
     if(req.body.filtros.nombre) options.qs.institucion = req.body.filtros.nombre
     if(req.body.filtros.curp) options.qs.curp = req.body.filtros.curp
     if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc
@@ -159,8 +159,8 @@ function getData(token,req) {
     };
 
     if(req.body.filtros.nombres) options.qs.nombres = req.body.filtros.nombres
-    if(req.body.filtros.primer_apellido) options.qs.primer_apellido = req.body.filtros.nombre_razon_social
-    if(req.body.filtros.segundo_apellido) options.qs.segundo_apellido = req.body.filtros.nombre_razon_social
+    if(req.body.filtros.primer_apellido) options.qs.apellido1 = req.body.filtros.primer_apellido
+    if(req.body.filtros.segundo_apellido) options.qs.apellido2 = req.body.filtros.segundo_apellido
     if(req.body.filtros.nombre) options.qs.institucion = req.body.filtros.nombre
     if(req.body.filtros.curp) options.qs.curp = req.body.filtros.curp
     if(req.body.filtros.rfc) options.qs.rfc = req.body.filtros.rfc

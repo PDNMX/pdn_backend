@@ -101,6 +101,7 @@ exports.getPrevioParticularesSancionados = function (req) {
         if (req.body.filtros.nombre_razon_social) filtros.nombre_razon_social = "%"+req.body.filtros.nombre_razon_social+"%";
         if (req.body.filtros.numero_expediente) filtros.numero_expediente = "%"+req.body.filtros.numero_expediente+"%";
         if (req.body.filtros.nombre) filtros.nombre = "%"+req.body.filtros.nombre+"%";
+
         client
             .query({
                 variables:
@@ -121,6 +122,7 @@ exports.getPrevioParticularesSancionados = function (req) {
                 })
             }
         }).catch(err => {
+            console.log("Error: ",err)
             resolve({
                 sujeto_obligado: SO,
                 estatus: false,

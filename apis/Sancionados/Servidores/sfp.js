@@ -113,6 +113,7 @@ exports.getPrevioServidoresSancionados = function (req) {
                 })
             }
         }).catch(err => {
+            console.log("Err:",err);
             resolve({
                 sujeto_obligado: SO,
                 estatus: false,
@@ -150,6 +151,7 @@ exports.getServidoresSancionados = function (req) {
             }
             resolve({data: dataAux, totalRows: response.data.total});
         }).catch(err => {
+            console.log("Error: ",err);
             reject(err)
         })
     })
