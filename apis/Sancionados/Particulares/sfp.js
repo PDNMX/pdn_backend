@@ -2,16 +2,12 @@ var exports = module.exports = {};
 import 'cross-fetch/polyfill';
 import ApolloClient from "apollo-boost";
 import {gql} from "apollo-boost";
-import {InMemoryCache} from "apollo-cache-inmemory";
 
 const SO = "Secretaría de la Función Pública";
 const CLAVE_API = "sfp";
 
 const client = new ApolloClient({
     uri: process.env.ENDPOINT_SFP_PARTICULARESSANCIONADOS,
-    cache: new InMemoryCache({
-        addTypename: false
-    })
 });
 
 let counter = 0;
@@ -102,6 +98,7 @@ exports.getPrevioParticularesSancionados = function (req) {
         if (req.body.filtros.numero_expediente) filtros.numero_expediente = "%"+req.body.filtros.numero_expediente+"%";
         if (req.body.filtros.nombre) filtros.nombre = "%"+req.body.filtros.nombre+"%";
 
+        console.log("Filtros: ",filtros);
         client
             .query({
                 variables:

@@ -58,7 +58,10 @@ function getToken() {
     };
     return new Promise((resolve, reject) => {
             request(options, function (error, res, body) {
-                if (error) reject;
+                if (error){
+                    console.log("Error token: ",error)
+                    reject
+                };
                 if (body) {
                     let info = JSON.parse(body);
                     resolve({
@@ -82,10 +85,12 @@ exports.getPrevioServidoresSancionados =  function (req) {
                     resultado
                 )
             }).catch(error => {
+                console.log("Error previo: ",error)
                 reject(error)
             });
 
         }).catch(error => {
+            console.log("Error previo: ",error)
             resolve({
                 sujeto_obligado: "Estado de México",
                 estatus:false,

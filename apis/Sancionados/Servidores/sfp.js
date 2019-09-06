@@ -2,16 +2,12 @@ var exports = module.exports = {};
 import 'cross-fetch/polyfill';
 import ApolloClient from "apollo-boost";
 import {gql} from "apollo-boost";
-import {InMemoryCache} from "apollo-cache-inmemory";
 
 const SO = "Secretaría de la Función Pública";
 const CLAVE_API = "sfp";
 
 const client = new ApolloClient({
     uri: process.env.ENDPOINT_SFP_SEVIDORESSANCIONADOS,
-    cache: new InMemoryCache({
-        addTypename: false
-    })
 });
 
 
