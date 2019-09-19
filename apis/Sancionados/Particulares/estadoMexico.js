@@ -56,7 +56,7 @@ function getToken() {
     };
     return new Promise((resolve, reject) => {
             request(options, function (error, res, body) {
-                if (error) reject;
+                if (error) reject();
                 if (body) {
                     let info = JSON.parse(body);
                     resolve({
@@ -139,7 +139,8 @@ exports.getPrevioParticularesSancionados =  function (req) {
             clave_api:"em",
             nivel: "Estatal"
         })
-       /* getToken().then(res => {
+       /* SE COMENTA PORQUE NO SE CUENTAN CON DATOS REALES
+        getToken().then(res => {
             let token = res.token;
             getDataPrevio(token,req).then(resultado => {
                 resolve(

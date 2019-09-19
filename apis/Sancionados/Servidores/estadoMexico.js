@@ -133,14 +133,7 @@ function getDataPrevio(token, req) {
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject({
-                sujeto_obligado: "Estado de México",
-                estatus: false,
-                totalRows: 0,
-                clave_api: "em",
-                nivel: "Estatal"
-            });
-
+            if (error) reject();
             if (res) {
                 if (res.statusCode !== 200) {
                     reject();
