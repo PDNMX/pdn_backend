@@ -1,6 +1,6 @@
 var exports = module.exports = {};
 import 'cross-fetch/polyfill';
-import ApolloClient from "apollo-boost";
+import ApolloClient, {InMemoryCache} from "apollo-boost";
 import {gql} from "apollo-boost";
 
 const SO = "Secretaría de la Función Pública";
@@ -8,6 +8,9 @@ const CLAVE_API = "sfp";
 
 const client = new ApolloClient({
     uri: process.env.ENDPOINT_SFP_SEVIDORESSANCIONADOS,
+    cache: new InMemoryCache({
+        addTypename: false
+    })
 });
 
 
@@ -158,18 +161,17 @@ exports.getDependenciasServidoresSancionados = function (req) {
         client
             .query({
 
-                query: gql ` 
+                query: gql `
                     query busca($filtros : FiltrosInput, $limit : Int, $offset : Int){
-                      results(filtros : $filtros, limit : $limit, offset : $offset){                  
-                        institucion_dependencia{
-                          nombre                       
+                        results(filtros : $filtros, limit : $limit, offset : $offset){
+                            institucion_dependencia{
+                                nombre
+                            }
+
                         }
-                 
-                    }
                     }
                              `
             }).then(res => {
-                console.log("Res sfp:",res)
             if (res && res.data && res.data.results) {
                 let dataAux = res.data.results.map(item => {
                     return item.institucion_dependencia.nombre
