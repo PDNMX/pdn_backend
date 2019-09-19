@@ -101,7 +101,7 @@ function getToken() {
     };
     return new Promise((resolve, reject) => {
             request(options, function (error, res, body) {
-                if (error) reject;
+                if (error) reject();
                 if (body) {
                     let info = JSON.parse(body);
                     resolve({
@@ -287,7 +287,7 @@ function getDependencias (token){
     };
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject;
+            if (error) reject();
             if (body) {
                 let info = JSON.parse(body);
                 let dataAux = info.map(item => {
