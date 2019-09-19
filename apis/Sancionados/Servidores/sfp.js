@@ -158,7 +158,7 @@ exports.getDependenciasServidoresSancionados = function (req) {
         client
             .query({
 
-                query: gql` 
+                query: gql ` 
                     query busca($filtros : FiltrosInput, $limit : Int, $offset : Int){
                       results(filtros : $filtros, limit : $limit, offset : $offset){                  
                         institucion_dependencia{
@@ -169,6 +169,7 @@ exports.getDependenciasServidoresSancionados = function (req) {
                     }
                              `
             }).then(res => {
+                console.log("Res sfp:",res)
             if (res && res.data && res.data.results) {
                 let dataAux = res.data.results.map(item => {
                     return item.institucion_dependencia.nombre
@@ -178,7 +179,8 @@ exports.getDependenciasServidoresSancionados = function (req) {
                     "data": [...limpio]
                 });
             }
-        }).catch(()=>{
+        }).catch((err)=>{
+            console.log("Error sfp: ",err)
             resolve({
                 "data":[]
             })

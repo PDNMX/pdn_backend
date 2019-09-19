@@ -75,6 +75,7 @@ router.post('/apis/getDependenciasServidores', cors(), (req, response) => {
         function (res) {
             let instituciones = [];
         res.forEach(item => {
+            console.log("item:",item)
             if(item.data)
                 instituciones = instituciones.concat(item.data);
         })
