@@ -160,25 +160,22 @@ exports.getDependenciasServidoresSancionados = function (req) {
     return new Promise((resolve, reject) => {
         client
             .query({
-
                 query: gql `
-                    query busca($filtros : FiltrosInput, $limit : Int, $offset : Int){
-                        results(filtros : $filtros, limit : $limit, offset : $offset){
-                            institucion_dependencia{
-                                nombre
-                            }
-
+                    query busca{
+                        results_dependencias (ordenCampo:nombre, ordenSentido:desc){
+                            nombre
                         }
                     }
-                             `
+                             `,
+            fetchPolicy: 'no-cache',
             }).then(res => {
-            if (res && res.data && res.data.results) {
-                let dataAux = res.data.results.map(item => {
-                    return item.institucion_dependencia.nombre
+            if (res && res.data && res.data.results_dependencias) {
+                let dataAux = res.data.results_dependencias.map(item => {
+                    return item.nombre
                 });
                 let limpio = new Set(dataAux)
                 resolve({
-                    "data": [...limpio]
+                    "data": dataAux
                 });
             }
         }).catch((err)=>{
