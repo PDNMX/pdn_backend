@@ -61,10 +61,12 @@ function getToken() {
             request(options, function (error, res, body) {
                 if (error) {
                     console.log("Error token: ", error)
-                    reject
+                    reject();
                 }
-                ;
                 if (body) {
+                    if (res.status.statusCode !== 200) {
+                        reject();
+                    }
                     let info = JSON.parse(body);
                     resolve({
                         "token": info.access_token

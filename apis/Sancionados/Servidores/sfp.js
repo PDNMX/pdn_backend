@@ -150,7 +150,7 @@ exports.getServidoresSancionados = function (req) {
             }
             resolve({data: dataAux, totalRows: response.data.total});
         }).catch(err => {
-            console.log("Error: ",err);
+            /* console.log("Error: ",err); */
             reject(err)
         })
     })
