@@ -87,7 +87,7 @@ function getData(token,req) {
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject;
+            if (error) reject();
             if (body) {
                 let info = JSON.parse(body);
                 resolve({
@@ -101,7 +101,7 @@ function getData(token,req) {
 }
 
 
-exports.getParticularesSancionados =  function (req) {
+exports.getParticularesSancionados =  function (req,response) {
     return new Promise((resolve, reject) => {
         getToken().then(res => {
             let token = res.token;
@@ -118,10 +118,15 @@ exports.getParticularesSancionados =  function (req) {
                         "totalRows" : resultado.totalRows
                     })
             }).catch(error => {
-                reject(error)
+                console.log("Error: ",error)
+                return response.status(400).send(
+                    {
+                        "error": error
+                    })
             });
 
         }).catch(err => {
+            console.log("Error: ",err)
             return response.status(400).send(
                 {
                     "error": err

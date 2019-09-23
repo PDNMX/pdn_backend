@@ -159,7 +159,11 @@ exports.getParticularesSancionados = function (req) {
                 })
             }
         }).catch(err => {
-            reject(err)
+            console.log("Error: ",err)
+            reject({
+                status:400,
+                error: err
+            })
         });
     });
 };

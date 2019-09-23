@@ -28,7 +28,12 @@ router.post('/apis/getPrevioParticularesSancionados', cors(), (req, response) =>
     Promise.all(getDataPromisses).then(function (res) {
         return response.status(200).send(
             res);
-    });
+    }).catch(function (err) {
+        return response.status(400).send(
+            {
+                "error": err
+            })
+    });;
 });
 
 
@@ -52,6 +57,11 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
                 "data":result.data,
                 "totalRows":result.totalRows
             });
+    }).catch(function (err) {
+        return response.status(400).send(
+            {
+                "error": err
+            })
     });
 });
 
