@@ -66,7 +66,7 @@ router.post('/apis/s2',cors(),(req,response)=>{
 /*
 NO DEVUELVE ERRORES, EN CASO DE ENCONTRAR ALGÚN ERROR EN EL PROMISE DEVUELVE UN ARREGLO VACIO
  */
-router.get('/apis/s2/dependencias', cors(), (req, response) => {
+router.post('/apis/s2/dependencias', cors(), (req, response) => {
     let nivel = req.body.nivel;
     let getDataPromisses = [];
     switch (nivel) {
