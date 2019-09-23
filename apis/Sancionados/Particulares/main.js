@@ -36,7 +36,7 @@ router.post('/apis/getPrevioParticularesSancionados', cors(), (req, response) =>
 });
 
 /*
-En caso de error devuelve status 404
+En caso de error devuelve status 500
  */
 router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
     let api = req.body.clave_api;
@@ -59,9 +59,9 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
                 "totalRows":result.totalRows
             });
     }).catch(function (err) {
-        return response.status(404).send(
+        return response.status(500).send(
             {
-                "codigo":404,
+                "codigo":500,
                 "error": err
             })
     });

@@ -33,7 +33,7 @@ router.post('/apis/s2/getPrevio',cors(),(req,response) => {
 
 
 /*
-EN CASO DE ERROR DEVUELVE UN 404
+EN CASO DE ERROR DEVUELVE UN 500
  */
 router.post('/apis/s2',cors(),(req,response)=>{
     let api = req.body.clave_api;
@@ -55,8 +55,8 @@ router.post('/apis/s2',cors(),(req,response)=>{
             "totalRows":result.totalRows
         });
     }).catch(error=>{
-        return response.status(404).send({
-            "codigo":404,
+        return response.status(500).send({
+            "codigo":500,
             "error" : error
         })
     });

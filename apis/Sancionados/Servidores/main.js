@@ -57,8 +57,8 @@ router.post('/apis/getServidoresSancionados', cors(), (req, response) => {
             "totalRows": result.totalRows
         });
     }).catch(error=>{
-        return response.status(404).send({
-            "codigo":404,
+        return response.status(500).send({
+            "codigo":500,
             "error" : error
         })
     });
