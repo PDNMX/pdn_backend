@@ -64,7 +64,7 @@ function getToken() {
                     reject();
                 }
                 if (body) {
-                    if (res.status.statusCode !== 200) {
+                    if (res.statusCode !== 200) {
                         reject();
                     }
                     let info = JSON.parse(body);
@@ -136,20 +136,19 @@ function getDataPrevio(token, req) {
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
             if (error) reject();
-            if (res) {
+            if (body) {
                 if (res.statusCode !== 200) {
                     reject();
                 } else {
-                    if (res.body) {
-                        let info = JSON.parse(body)
-                        resolve({
-                            sujeto_obligado: "Estado de México",
-                            estatus: true,
-                            totalRows: info.pagination.total,
-                            clave_api: "em",
-                            nivel: "Estatal"
-                        })
-                    }
+                    let info = JSON.parse(body)
+                    resolve({
+                        sujeto_obligado: "Estado de México",
+                        estatus: true,
+                        totalRows: info.pagination.total,
+                        clave_api: "em",
+                        nivel: "Estatal"
+                    })
+
                 }
             }
 
@@ -182,8 +181,8 @@ function getData(token, req) {
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
             if (error) reject();
-            if (res) {
-                if (res.status.statusCode !== 200) {
+            if (body) {
+                if (res.statusCode !== 200) {
                     reject();
                 } else {
                     if (res.body) {
@@ -245,22 +244,20 @@ function getDependencias(token) {
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
             if (error) reject();
-            if (res) {
+            if (body) {
                 let code = res.statusCode;
                 if (code !== 200) {
                     reject()
-                } else if (res.body) {
-                    let body = res.body;
-                    //Revisar
-                    let info = JSON.parse(body);
-                    let dataAux = info.map(item => {
-                        return item.nombre
-                    });
-                    resolve({
-                        instituciones: dataAux,
-                    })
-
                 }
+                //Revisar
+                let info = body;
+                let dataAux = info.map(item => {
+                    return item.nombre
+                });
+                resolve({
+                    instituciones: dataAux,
+                })
+
             }
         });
 
