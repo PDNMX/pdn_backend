@@ -9,6 +9,10 @@ let em = require("./estadoMexico.js");
 let sfp = require("./sfp");
 
 
+/*
+No cuenta con catch pues en caso de algún error se responde con resolve y los datos del api que
+no funciona
+ */
 router.post('/apis/getPrevioParticularesSancionados', cors(), (req, response) => {
     let nivel = req.body.nivel;
     let getDataPromisses = [];
@@ -28,15 +32,12 @@ router.post('/apis/getPrevioParticularesSancionados', cors(), (req, response) =>
     Promise.all(getDataPromisses).then(function (res) {
         return response.status(200).send(
             res);
-    }).catch(function (err) {
-        return response.status(400).send(
-            {
-                "error": err
-            })
-    });;
+    });
 });
 
-
+/*
+En caso de error devuelve status 404
+ */
 router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
     let api = req.body.clave_api;
     let getDataPromisses = [];
@@ -58,13 +59,17 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
                 "totalRows":result.totalRows
             });
     }).catch(function (err) {
-        return response.status(400).send(
+        return response.status(404).send(
             {
+                "codigo":404,
                 "error": err
             })
     });
 });
 
+/*
+No devuelve errores, en caso de presentarse uno dentro de las promisses devuelve []
+ */
 router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
     let nivel = req.body.nivel;
     let getDataPromisses = [];

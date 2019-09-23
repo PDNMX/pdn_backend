@@ -120,7 +120,7 @@ exports.getPrevioParticularesSancionados = function (req) {
                 })
             }
         }).catch(err => {
-            console.log("Error: ",err)
+            console.log("Error SFP(getPrevioParticularesSancionados): ",err)
             resolve({
                 sujeto_obligado: SO,
                 estatus: false,
@@ -159,11 +159,8 @@ exports.getParticularesSancionados = function (req) {
                 })
             }
         }).catch(err => {
-            console.log("Error: ",err)
-            reject({
-                status:400,
-                error: err
-            })
+            console.log("Error SFP(getParticularesSancionados): ",err)
+            reject(err)
         });
     });
 };
@@ -195,6 +192,7 @@ exports.getDependenciasParticularesSancionados = function (req) {
                 });
             }
         }).catch(err => {
+            console.log("Error SFP(getDependenciasParticularesSancionados)",err)
             resolve({
                 "data":[]
             })

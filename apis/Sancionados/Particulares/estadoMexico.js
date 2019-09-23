@@ -100,7 +100,9 @@ function getData(token,req) {
     });
 }
 
-
+/*
+REVISAR CUANDO SE INTEGRE
+ */
 exports.getParticularesSancionados =  function (req,response) {
     return new Promise((resolve, reject) => {
         getToken().then(res => {
@@ -135,6 +137,9 @@ exports.getParticularesSancionados =  function (req,response) {
     });
 }
 
+/*
+REVISAR CUANDO SE INTEGRE
+ */
 exports.getPrevioParticularesSancionados =  function (req) {
     return new Promise((resolve, reject) => {
         resolve({
@@ -236,6 +241,10 @@ function getDependencias (token){
 
     });
 }
+
+/*
+REVISAR CUANDO SE INTEGRE
+ */
 exports.getDependenciasParticularesSancionados = function (req) {
     return new Promise((resolve, reject) => {
         getToken().then(res => {

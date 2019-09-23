@@ -112,7 +112,7 @@ exports.getPrevioServidoresSancionados = function (req) {
                 })
             }
         }).catch(err => {
-            console.log("Err:",err);
+            console.log("Error SFP(getPrevioServidoresSancionados):",err);
             resolve({
                 sujeto_obligado: SO,
                 estatus: false,
@@ -150,7 +150,7 @@ exports.getServidoresSancionados = function (req) {
             }
             resolve({data: dataAux, totalRows: response.data.total});
         }).catch(err => {
-            /* console.log("Error: ",err); */
+            console.log("Error SFP(getServidoresSancionados): ",err);
             reject(err)
         })
     })
@@ -173,13 +173,12 @@ exports.getDependenciasServidoresSancionados = function (req) {
                 let dataAux = res.data.results_dependencias.map(item => {
                     return item.nombre
                 });
-                let limpio = new Set(dataAux)
                 resolve({
                     "data": dataAux
                 });
             }
         }).catch((err)=>{
-            console.log("Error sfp: ",err)
+            console.log("Error sfp(getDependenciasServidoresSancionados): ",err)
             resolve({
                 "data":[]
             })

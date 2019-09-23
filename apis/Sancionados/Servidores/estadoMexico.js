@@ -60,11 +60,12 @@ function getToken() {
     return new Promise((resolve, reject) => {
             request(options, function (error, res, body) {
                 if (error) {
-                    console.log("Error token: ", error)
+                    console.log("Error token EM: ", error)
                     reject();
                 }
                 if (body) {
                     if (res.statusCode !== 200) {
+                        console.log("Error token EM: statusCode!= 200 ")
                         reject();
                     }
                     let info = JSON.parse(body);
@@ -87,7 +88,6 @@ exports.getPrevioServidoresSancionados = function (req) {
                     resultado
                 )
             }).catch(error => {
-                console.log("Error previo: ", error)
                 resolve({
                     sujeto_obligado: "Estado de México",
                     estatus: false,
@@ -98,7 +98,6 @@ exports.getPrevioServidoresSancionados = function (req) {
             });
 
         }).catch(error => {
-            console.log("Error previo: ", error)
             resolve({
                 sujeto_obligado: "Estado de México",
                 estatus: false,
@@ -135,9 +134,13 @@ function getDataPrevio(token, req) {
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject();
+            if (error) {
+                console.log("Error EM(getDataPrevio): ", error)
+                reject(error)
+            };
             if (body) {
                 if (res.statusCode !== 200) {
+                    console.log("Error EM(getDataPrevio): statusCode!= 200 ")
                     reject();
                 } else {
                     let info = JSON.parse(body)
@@ -153,7 +156,6 @@ function getDataPrevio(token, req) {
             }
 
         });
-
     });
 };
 
@@ -180,18 +182,21 @@ function getData(token, req) {
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject();
+            if (error) {
+                console.log("Error EM(getData): ", error);
+                reject(error)
+            };
             if (body) {
                 if (res.statusCode !== 200) {
+                    console.log("Error EM(getData): statusCode!= 200");
                     reject();
                 } else {
-                    if (res.body) {
-                        let info = JSON.parse(res.body);
-                        resolve({
-                            results: info.results,
-                            totalRows: info.pagination.total
-                        })
-                    }
+                    let info = JSON.parse(body);
+                    resolve({
+                        results: info.results,
+                        totalRows: info.pagination.total
+                    })
+
                 }
             }
 
@@ -200,7 +205,7 @@ function getData(token, req) {
     });
 }
 
-exports.getServidoresSancionados = function (req) {
+exports.getServidoresSancionados = function (req,response) {
     return new Promise((resolve, reject) => {
         getToken().then(res => {
             let token = res.token;
@@ -217,14 +222,11 @@ exports.getServidoresSancionados = function (req) {
                         "totalRows": resultado.totalRows
                     })
             }).catch(error => {
-                reject(error)
+               reject(error)
             });
 
         }).catch(err => {
-            return response.status(400).send(
-                {
-                    "error": err
-                })
+            reject(err)
         });
     });
 }
@@ -243,10 +245,14 @@ function getDependencias(token) {
 
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject();
+            if (error) {
+                console.log("Error EM(getDependencias): ", error)
+                reject()
+            };
             if (body) {
                 let code = res.statusCode;
                 if (code !== 200) {
+                    console.log("Error EM(getDependencias): statusCode != 200 ")
                     reject()
                 }
                 //Revisar
