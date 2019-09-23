@@ -7,10 +7,9 @@ var Promise = require("bluebird");
 let em = require('./estadoMexico');
 let sfp = require('./sfp');
 
-/* router.get('/apis/s2/',cors(),(req,response) => {
-    response.status(200).send('holaaaa mundo');
- });  */
-
+/*
+NO DEBE REGRESAR ERRORES, EN CASO DE ERROR DEBE DEVOLVER A INF DEL API QUE ESTA FALLANDO
+ */
 router.post('/apis/s2/getPrevio',cors(),(req,response) => {
    let nivel = req.body.nivel;
    let getDataPromisses = [];
@@ -32,6 +31,10 @@ router.post('/apis/s2/getPrevio',cors(),(req,response) => {
     });
 });
 
+
+/*
+EN CASO DE ERROR DEVUELVE UN 404
+ */
 router.post('/apis/s2',cors(),(req,response)=>{
     let api = req.body.clave_api;
     let getDataPromisses = [];
@@ -47,15 +50,22 @@ router.post('/apis/s2',cors(),(req,response)=>{
 
     Promise.all(getDataPromisses).then(function (res) {
         let result = res[0];
-        //console.log(res);
         return response.status(200).send({
             "data":result.data,
             "totalRows":result.totalRows
         });
+    }).catch(error=>{
+        return response.status(404).send({
+            "codigo":404,
+            "error" : error
+        })
     });
 
 });
 
+/*
+NO DEVUELVE ERRORES, EN CASO DE ENCONTRAR ALGÚN ERROR EN EL PROMISE DEVUELVE UN ARREGLO VACIO
+ */
 router.get('/apis/s2/dependencias', cors(), (req, response) => {
     let nivel = req.body.nivel;
     let getDataPromisses = [];
@@ -73,7 +83,6 @@ router.get('/apis/s2/dependencias', cors(), (req, response) => {
 
     Promise.all(getDataPromisses).then(
         function (res) {
-            /* console.log(res) */
             let instituciones = [];
         res.forEach(item => {
             if(item.data)

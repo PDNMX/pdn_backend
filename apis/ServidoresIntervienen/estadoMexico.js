@@ -101,8 +101,15 @@ function getToken() {
     };
     return new Promise((resolve, reject) => {
             request(options, function (error, res, body) {
-                if (error) reject();
+                if (error){
+                    console.log("Error EM(getToken):",error);
+                    reject(error)
+                };
                 if (body) {
+                    if (res.statusCode !== 200) {
+                        console.log("Error token EM: statusCode!= 200 ")
+                        reject();
+                    }
                     let info = JSON.parse(body);
                     resolve({
                         "token": info.access_token
@@ -150,17 +157,18 @@ function getDataPrevio(token,req) {
         }
     }
 
-    /* console.log(options); */
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject({
-                sujeto_obligado: "Estado de México",
-                estatus:false,
-                totalRows: 0,
-                clave_api:"em",
-                nivel: "Estatal"
-            });
+            if (error) {
+                console.log("Error EM(getDataPrevio): ",error)
+                reject()
+            };
             if (body) {
+                let code = res.statusCode;
+                if (code !== 200) {
+                    console.log("Error EM(getDataPrevio): statusCode != 200 ")
+                    reject()
+                }
                 let info = JSON.parse(body)
                 resolve({
                     sujeto_obligado: "Estado de México",
@@ -212,8 +220,15 @@ function getData(token,req) {
     }
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject();
+            if (error) {
+                console.log("Error EM(getData): ",error)
+                reject(error)
+            };
             if (body) {
+                if (res.statusCode !== 200) {
+                    console.log("Error EM(getData): statusCode!= 200");
+                    reject();
+                }
                 let info = JSON.parse(body);
                 resolve({
                     results: info.results,
@@ -234,7 +249,12 @@ exports.getPrevioServidoresIntervienen =  function (req) {
                     resultado
                 )
             }).catch(error => {
-                reject(error)
+                resolve({
+                    sujeto_obligado: "Estado de México",
+                    estatus:false,
+                    totalRows: 0,
+                    clave_api:"em"
+                })
             });
 
         }).catch(error => {
@@ -270,7 +290,7 @@ exports.getServidoresIntervienen =  function (req) {
             });
 
         }).catch(err => {
-            console.log(err)
+            reject(err)
         });
     });
 }
@@ -287,8 +307,15 @@ function getDependencias (token){
     };
     return new Promise((resolve, reject) => {
         request(options, function (error, res, body) {
-            if (error) reject();
+            if (error) {
+                console.log("Error EM(getDependencias): ",error);
+                reject(error)
+            };
             if (body) {
+                if (res.statusCode !== 200) {
+                    console.log("Error token EM(getDependencias): statusCode!= 200 ")
+                    reject();
+                }
                 let info = JSON.parse(body);
                 let dataAux = info.map(item => {
                     return item.nombre
@@ -298,7 +325,6 @@ function getDependencias (token){
                 })
             }
         });
-
     });
 }
 exports.getDependenciasS2 = function (req) {
@@ -306,10 +332,9 @@ exports.getDependenciasS2 = function (req) {
         getToken().then(res => {
             let token = res.token;
             getDependencias(token).then(resultado => {
-                let limpio = new Set(resultado.instituciones);
                 resolve(
                     {
-                        "data":  [...limpio],
+                        "data":  resultado.instituciones,
                     })
             }).catch(error => {
                 resolve({

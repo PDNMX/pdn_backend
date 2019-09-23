@@ -30,7 +30,6 @@ app.use(function(req, res, next) {
 var indexRouter = require('./routes/index');
 var indexSancionados = require('./apis/Sancionados/Servidores/main');
 var indexParticularesSancionados = require('./apis/Sancionados/Particulares/main');
-var indexRENIRESP = require('./apis/ServidoresIntervienen/servidoresIntervienen');
 // API S2 EDO MEX
 var indexS2EdoMex = require('./apis/ServidoresIntervienen/main');
 
@@ -42,8 +41,6 @@ var queryServidoresIntervienen = require('./charts/servidoresIntervienen/querySe
 app.use('/', indexRouter);
 app.use('/',indexSancionados);
 app.use('/',indexParticularesSancionados);
-app.use('/', indexRENIRESP);
-
 app.use('/', indexS2EdoMex);
 
 //CHARTS

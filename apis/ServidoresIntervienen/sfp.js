@@ -188,7 +188,6 @@ let query = gql`
 }; */
 exports.getPrevioServidoresIntervienen = function (req) {
     return new Promise((resolve, reject) => {
-        console.log(filtros)
         let filtros = {};
         if (req.body.filtros.nombres) filtros.nombres = req.body.filtros.nombres;
         if (req.body.filtros.primer_apellido) filtros.primer_apellido = req.body.filtros.primer_apellido;
@@ -196,7 +195,6 @@ exports.getPrevioServidoresIntervienen = function (req) {
         if (req.body.filtros.institucion) filtros.institucion =  req.body.filtros.institucion;
         if (req.body.filtros.procedimiento) filtros.tipo_actos =  req.body.filtros.procedimiento;
 
-        /* console.log("filtros: ",filtros); */
         client.query({
             variables: {
                 "first": 200,
@@ -250,6 +248,7 @@ exports.getServidoresIntervienen = function (req) {
             }
             resolve({data: dataAux, totalRows: response.data.servidor_publico.totalCount});
         }).catch(err => {
+            console.log("Error SFP(getServidoresIntervienen): ",err)
             reject(err)
         })
     })    
@@ -265,10 +264,7 @@ exports.getDependencias = function (req, response) {
                         field:nombre
                         direction:ASC
                     }){
-                        totalCount
                         results{
-                        clave
-                        siglas
                         nombre
                         }
                     }
@@ -279,18 +275,12 @@ exports.getDependencias = function (req, response) {
                 let dataAux = res.data.dependencias.results.map(item => {
                     return item.nombre;
                 });
-                let limpio = new Set(dataAux)
                 resolve({
-                    "data": [...limpio]
-                });
-                /* resolve({
                     "data": dataAux
-                }); */
-            } 
-
-
+                });
+            }
         }).catch(err => {
-            console.error(err);
+            console.error("Error SFP (getDependencias): ",err);
             resolve({
                 "data":[]
             })
