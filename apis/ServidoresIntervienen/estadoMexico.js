@@ -2,7 +2,6 @@ var exports = module.exports = {};
 import 'cross-fetch/polyfill';
 var request = require("request");
 
-let counter = 0;
 
 let createDataEM = (item) => {
     let leyenda = "NO EXISTE DATO EN LA BASE DEL ESTADO DE MÉXICO";
@@ -39,7 +38,7 @@ let createDataEM = (item) => {
         }
     }) 
     let nivel = item.nivel_responsabilidad === 'A' ? "ATENCIÓN" : item.nivel_responsabilidad === 'R' ? "RESOLUCIÓN" : "TRAMITACIÓN";
-    counter += 1;
+
 
     return {
         id: item.id,
