@@ -8,6 +8,7 @@ var Promise = require("bluebird");
 
 let em = require('./estadoMexico');
 let sfp = require('./sfp');
+let pue = require('./puebla');
 
 /*
 EN CASO DE PRESENTARSE ERRORES, REGRESA LA INF DEL API CON STATUS = FALSE
@@ -22,9 +23,11 @@ router.post('/apis/getPrevioServidoresSancionados', cors(), (req, response) => {
             break;
         case "estatal":
             getDataPromisses.push(em.getPrevioServidoresSancionados(req));
+//          getDataPromisses.push(em.getPrevioServidoresSancionados(req),pue.getPrevioServidoresSancionados(req));
             break;
         default :
             getDataPromisses.push(sfp.getPrevioServidoresSancionados(req), em.getPrevioServidoresSancionados(req));
+            //getDataPromisses.push(sfp.getPrevioServidoresSancionados(req), em.getPrevioServidoresSancionados(req),pue.getPrevioServidoresSancionados(req));
             break;
     }
     Promise.all(getDataPromisses).then(function (res) {
@@ -48,6 +51,8 @@ router.post('/apis/getServidoresSancionados', cors(), (req, response) => {
         case "sfp":
             getDataPromisses.push(sfp.getServidoresSancionados(req));
             break;
+        case "pue":
+            getDataPromisses.push(pue.getServidoresSancionados(req));
     }
 
     Promise.all(getDataPromisses).then(function (res) {
@@ -77,10 +82,12 @@ router.post('/apis/getDependenciasServidores', cors(), (req, response) => {
             getDataPromisses.push(sfp.getDependenciasServidoresSancionados(req));
             break;
         case "estatal":
+            //getDataPromisses.push(em.getDependenciasServidoresSancionados(req), pue.getDependenciasServidoresSancionados());
             getDataPromisses.push(em.getDependenciasServidoresSancionados(req));
             break;
         default :
-            getDataPromisses.push(em.getDependenciasServidoresSancionados(req),sfp.getDependenciasServidoresSancionados(req) );
+            //getDataPromisses.push(em.getDependenciasServidoresSancionados(req),sfp.getDependenciasServidoresSancionados(req), pue.getDependenciasServidoresSancionados() );
+            getDataPromisses.push(em.getDependenciasServidoresSancionados(req),sfp.getDependenciasServidoresSancionados(req));
             break;
     }
 

@@ -16,26 +16,26 @@ const client = new ApolloClient({
 
 let counter = 0;
 let createData = (item) => {
-    let leyenda = "NO EXISTE DATO EN LA BASE DE DATOS RSPS";
+    let leyenda = "No existe dato en la base de datos RSPS";
     counter += 1;
     return {
         id: counter,
-        nombre: item.nombres ? item.nombres.toUpperCase() : '',
-        apellidoUno: item.primer_apellido ? item.primer_apellido.toUpperCase() : '',
-        apellidoDos: item.segundo_apellido ? item.segundo_apellido.toUpperCase() : '',
+        nombre: item.nombres ? item.nombres : '',
+        apellidoUno: item.primer_apellido ? item.primer_apellido : '',
+        apellidoDos: item.segundo_apellido ? item.segundo_apellido : '',
         institucion: item.institucion_dependencia ? {
-            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre.toUpperCase() : leyenda,
-            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas.toUpperCase() : leyenda
+            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
+            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
         } : leyenda,
-        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora.toUpperCase() : leyenda,
+        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
         expediente: item.expediente ? item.expediente : leyenda,
-        tipo_sancion: item.tipo_sancion ? item.tipo_sancion.toUpperCase() : leyenda,
-        causa: item.causa ? item.causa.toUpperCase() : leyenda,
+        tipo_sancion: item.tipo_sancion ? item.tipo_sancion : leyenda,
+        causa: item.causa ? item.causa : leyenda,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
     //    rfc: item.rfc ? item.rfc : leyenda,
       //  curp: item.curp ? item.curp : leyenda,
         //genero: item.genero ? item.genero : leyenda,
-        tipo_falta: item.tipo_falta ? item.tipo_falta.toUpperCase() : leyenda,
+        tipo_falta: item.tipo_falta ? item.tipo_falta : leyenda,
         resolucion: item.resolucion ? {
             fecha_notificacion: item.resolucion.fecha_notificacion ? item.resolucion.fecha_notificacion : leyenda
         } : leyenda,
@@ -46,9 +46,9 @@ let createData = (item) => {
         inhabilitacion: item.inhabilitacion ? {
             fecha_inicial: (item.inhabilitacion.fecha_inicial && item.inhabilitacion.fecha_inicial.trim()) ? item.inhabilitacion.fecha_inicial : leyenda,
             fecha_final: (item.inhabilitacion.fecha_final && item.inhabilitacion.fecha_final.trim()) ? item.inhabilitacion.fecha_final : leyenda,
-            observaciones: (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim()) ? item.inhabilitacion.observaciones.toUpperCase() : leyenda
+            observaciones: (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim()) ? item.inhabilitacion.observaciones : leyenda
         } : leyenda,
-        puesto: item.puesto ? item.puesto.toUpperCase() : leyenda
+        puesto: item.puesto ? item.puesto : leyenda
     };
 };
 
@@ -87,12 +87,12 @@ let query = gql`
 exports.getPrevioServidoresSancionados = function (req) {
     return new Promise((resolve, reject) => {
         let filtros = {};
-        if (req.body.filtros.nombres) filtros.nombres = "%"+req.body.filtros.nombres.toUpperCase()+"%";
-        if (req.body.filtros.primer_apellido) filtros.primer_apellido = "%"+req.body.filtros.primer_apellido.toUpperCase() +"%" ;
-        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = "%"+req.body.filtros.segundo_apellido.toUpperCase()+"%";
-        if (req.body.filtros.rfc) filtros.rfc =  "%"+req.body.filtros.rfc.toUpperCase()+"%";
-        if (req.body.filtros.curp) filtros.curp =  "%"+req.body.filtros.curp.toUpperCase()+"%" ;
-        if (req.body.filtros.nombre) filtros.nombre =  "%"+req.body.filtros.nombre.toUpperCase()+"%";
+        if (req.body.filtros.nombres) filtros.nombres = "%"+req.body.filtros.nombres+"%";
+        if (req.body.filtros.primer_apellido) filtros.primer_apellido = "%"+req.body.filtros.primer_apellido +"%" ;
+        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = "%"+req.body.filtros.segundo_apellido+"%";
+        if (req.body.filtros.rfc) filtros.rfc =  "%"+req.body.filtros.rfc+"%";
+        if (req.body.filtros.curp) filtros.curp =  "%"+req.body.filtros.curp+"%" ;
+        if (req.body.filtros.nombre) filtros.nombre =  "%"+req.body.filtros.nombre+"%";
 
         client.query({
             variables: {
@@ -128,12 +128,12 @@ exports.getPrevioServidoresSancionados = function (req) {
 exports.getServidoresSancionados = function (req) {
     return new Promise((resolve, reject) => {
         let filtros = {};
-        if (req.body.filtros.nombres) filtros.nombres = "%"+req.body.filtros.nombres.toUpperCase()+"%";
-        if (req.body.filtros.primer_apellido) filtros.primer_apellido = "%"+req.body.filtros.primer_apellido.toUpperCase() +"%" ;
-        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = "%"+req.body.filtros.segundo_apellido.toUpperCase()+"%";
-        if (req.body.filtros.rfc) filtros.rfc =  "%"+req.body.filtros.rfc.toUpperCase()+"%";
-        if (req.body.filtros.curp) filtros.curp =  "%"+req.body.filtros.curp.toUpperCase()+"%" ;
-        if (req.body.filtros.nombre) filtros.nombre =  "%"+req.body.filtros.nombre.toUpperCase()+"%";
+        if (req.body.filtros.nombres) filtros.nombres = "%"+req.body.filtros.nombres+"%";
+        if (req.body.filtros.primer_apellido) filtros.primer_apellido = "%"+req.body.filtros.primer_apellido +"%" ;
+        if (req.body.filtros.segundo_apellido) filtros.segundo_apellido = "%"+req.body.filtros.segundo_apellido+"%";
+        if (req.body.filtros.rfc) filtros.rfc =  "%"+req.body.filtros.rfc+"%";
+        if (req.body.filtros.curp) filtros.curp =  "%"+req.body.filtros.curp+"%" ;
+        if (req.body.filtros.nombre) filtros.nombre =  "%"+req.body.filtros.nombre+"%";
         client.query({
             variables: {
                 "limit" : req.body && req.body.limit ? req.body.limit : 200,
@@ -178,7 +178,7 @@ exports.getDependenciasServidoresSancionados = function (req) {
                 });
             }
         }).catch((err)=>{
-            console.log("Error sfp(getDependenciasServidoresSancionados): ",err)
+            console.log("Error SFP(getDependenciasServidoresSancionados): ",err)
             resolve({
                 "data":[]
             })

@@ -7,7 +7,7 @@ var Promise = require("bluebird");
 
 let em = require("./estadoMexico.js");
 let sfp = require("./sfp");
-
+let pue = require("./puebla.js");
 
 /*
 No cuenta con catch pues en caso de algún error se responde con resolve y los datos del api que
@@ -22,9 +22,11 @@ router.post('/apis/getPrevioParticularesSancionados', cors(), (req, response) =>
             getDataPromisses.push(sfp.getPrevioParticularesSancionados(req));
             break;
         case "estatal":
+            //getDataPromisses.push(em.getPrevioParticularesSancionados(req),pue.getPrevioParticularesSancionados(req));
             getDataPromisses.push(em.getPrevioParticularesSancionados(req));
             break;
         default:
+            //getDataPromisses.push(sfp.getPrevioParticularesSancionados(req), em.getPrevioParticularesSancionados(req),pue.getPrevioParticularesSancionados(req));
             getDataPromisses.push(sfp.getPrevioParticularesSancionados(req), em.getPrevioParticularesSancionados(req));
             break;
     }
@@ -49,6 +51,8 @@ router.post('/apis/getParticularesSancionados', cors(), (req, response) => {
         case "sfp":
             getDataPromisses.push(sfp.getParticularesSancionados(req));
             break;
+        case "pue":
+            getDataPromisses.push(pue.getParticularesSancionados(req));
     }
 
     Promise.all(getDataPromisses).then(function (res) {
@@ -79,11 +83,12 @@ router.post('/apis/getDependenciasParticulares', cors(), (req, response) => {
             getDataPromisses.push(sfp.getDependenciasParticularesSancionados(req));
             break;
         case "estatal":
+            //getDataPromisses.push(em.getDependenciasParticularesSancionados(req),pue.getDependenciasParticularesSancionados());
             getDataPromisses.push(em.getDependenciasParticularesSancionados(req));
             break;
         default :
-            //getDataPromisses.push(em.getDependenciasParticularesSancionados(req),sfp.getDependenciasParticularesSancionados(req) );
-            getDataPromisses.push(sfp.getDependenciasParticularesSancionados(req) );
+            //getDataPromisses.push(sfp.getDependenciasParticularesSancionados(req),pue.getDependenciasParticularesSancionados() );
+            getDataPromisses.push(sfp.getDependenciasParticularesSancionados(req));
             break;
     }
 

@@ -16,7 +16,7 @@ const client = new ApolloClient({
 let counter = 0;
 let createData = (item) => {
     counter += 1;
-    let leyenda = "NO EXISTE DATO EN LA BASE DE DATOS SFP";
+    let leyenda = "No existe dato en la base de datos SFP";
     return {
         id: counter,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
@@ -34,8 +34,8 @@ let createData = (item) => {
         causa_motivo_hechos: item.causa_motivo_hechos ? item.causa_motivo_hechos : leyenda,
         objetoSocial: item.objeto_social ? item.objeto_social : leyenda,
         autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
-        responsable: item.responsable ? item.responsable.nombres + ' ' + item.responsable.primer_apellido + ' '
-            + item.responsable.segundo_apellido : leyenda,
+        responsable: item.responsable && item.responsable.nombres ? item.responsable.nombres+ ' ' + (item.responsable.primer_apellido ? item.responsable.primer_apellido : '') + ' '
+            + (item.responsable.segundo_apellido ? item.responsable.segundo_apellido : '') : leyenda,
         resolucion: item.resolucion ? {
             sentido: item.resolucion.sentido ? item.resolucion.sentido : leyenda
         } : leyenda,

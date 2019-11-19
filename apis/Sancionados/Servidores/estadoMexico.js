@@ -7,20 +7,20 @@ let counter = 0;
 
 let createDataEM = (item) => {
     counter += 1;
-    let leyenda = "NO EXISTE DATO EN LA BASE DEL ESTADO DE MÉXICO";
+    let leyenda = "No existe dato en la base del Estado de México";
     return {
         id: counter,
-        nombre: item.servidor_publico_sancionado && item.servidor_publico_sancionado.nombres ? item.servidor_publico_sancionado.nombres.toUpperCase() : '',
-        apellidoUno: item.servidor_publico_sancionado && item.servidor_publico_sancionado.primer_apellido ? item.servidor_publico_sancionado.primer_apellido.toUpperCase() : '',
-        apellidoDos: item.servidor_publico_sancionado && item.servidor_publico_sancionado.segundo_apellido ? item.servidor_publico_sancionado.segundo_apellido.toUpperCase() : '',
+        nombre: item.servidor_publico_sancionado && item.servidor_publico_sancionado.nombres ? item.servidor_publico_sancionado.nombres : '',
+        apellidoUno: item.servidor_publico_sancionado && item.servidor_publico_sancionado.primer_apellido ? item.servidor_publico_sancionado.primer_apellido : '',
+        apellidoDos: item.servidor_publico_sancionado && item.servidor_publico_sancionado.segundo_apellido ? item.servidor_publico_sancionado.segundo_apellido : '',
         institucion: item.institucion_dependencia ? {
-            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre.toUpperCase() : leyenda,
-            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas.toUpperCase() : leyenda
+            nombre: item.institucion_dependencia.nombre ? item.institucion_dependencia.nombre : leyenda,
+            siglas: item.institucion_dependencia.siglas ? item.institucion_dependencia.siglas : leyenda
         } : leyenda,
-        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora.toUpperCase() : leyenda,
+        autoridad_sancionadora: item.autoridad_sancionadora ? item.autoridad_sancionadora : leyenda,
         expediente: item.expediente ? item.expediente : leyenda,
-        tipo_sancion: (item.tipo_sancion && item.tipo_sancion.length > 0) ? (item.tipo_sancion[0] ? item.tipo_sancion[0].toUpperCase() : leyenda) : leyenda,
-        causa: item.causa_motivo_hechos ? item.causa_motivo_hechos.toUpperCase() : leyenda,
+        tipo_sancion: (item.tipo_sancion && item.tipo_sancion.length > 0) ? (item.tipo_sancion[0] ? item.tipo_sancion[0] : leyenda) : leyenda,
+        causa: item.causa_motivo_hechos ? item.causa_motivo_hechos : leyenda,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
         //rfc: item.servidor_publico_sancionado && item.servidor_publico_sancionado.rfc ? item.servidor_publico_sancionado.rfc : leyenda,
         //curp: item.servidor_publico_sancionado && item.servidor_publico_sancionado.curp ? item.servidor_publico_sancionado.curp : leyenda,
@@ -30,7 +30,7 @@ let createDataEM = (item) => {
             fecha_notificacion: item.resolucion.fecha_notificacion ? item.resolucion.fecha_notificacion : leyenda
         } : leyenda,
         multa: item.multa ? {
-            monto: item.multa.monto ? item.multa.monto : leyenda,
+            monto: !isNaN(item.multa.monto) ? item.multa.monto : leyenda,
             moneda: item.multa.moneda ? item.multa.moneda : leyenda
         } : leyenda,
         inhabilitacion: item.inhabilitacion ? {
@@ -38,7 +38,7 @@ let createDataEM = (item) => {
             fecha_final: (item.inhabilitacion.fecha_final && item.inhabilitacion.fecha_final.trim()) ? item.inhabilitacion.fecha_final : leyenda,
             observaciones: (item.inhabilitacion.observaciones && item.inhabilitacion.observaciones.trim()) ? item.inhabilitacion.observaciones : leyenda
         } : leyenda,
-        puesto: item.servidor_publico_sancionado && item.servidor_publico_sancionado.puesto ? item.servidor_publico_sancionado.puesto.toUpperCase() : leyenda
+        puesto: item.servidor_publico_sancionado && item.servidor_publico_sancionado.puesto ? item.servidor_publico_sancionado.puesto : leyenda
     };
 };
 
@@ -167,7 +167,7 @@ function getData(token, req) {
             {
                 access_token: token,
                 sort: 'asc',
-                page: req.body.offset > 0 ? (req.body.offset / req.body.limit) : 1,
+                page: req.body.offset > 0 ? ((req.body.offset / req.body.limit)+1) : 1,
                 page_size: req.body.limit
 
             }
@@ -281,12 +281,14 @@ exports.getDependenciasServidoresSancionados = function (req) {
                         "data": [...limpio],
                     })
             }).catch(error => {
+                console.log("Error getDepEM: ",error)
                 resolve({
                     "data": []
                 })
             });
 
         }).catch(err => {
+            console.log("Error getDepEM: ",error)
             resolve({
                 data: []
             })

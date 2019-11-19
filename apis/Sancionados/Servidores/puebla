@@ -1,0 +1,246 @@
+var exports = module.exports = {};
+var request = require("request");
+let fnct = require('../../Utils/functions')
+
+
+function getToken() {
+    let options = {
+        method: 'POST',
+        url: process.env.ENDPOINT_PUE_SS_TOKEN,
+        contentType: 'x-www-form-urlencoded',
+        form:
+            {
+                grant_type: 'password',
+                username: process.env.PUE_USERNAME,
+                password: process.env.PUE_PASSWORD,
+                client_id: process.env.PUE_CLIENTID_SS,
+                client_secret: process.env.PUE_CLIENTSECRET_SS
+            }
+    };
+    return new Promise((resolve, reject) => {
+            request(options, function (error, res, body) {
+                if (error) {
+                    console.log("Error token PUE: ", error)
+                    reject();
+                }
+                if (body) {
+                    if (res.statusCode !== 200) {
+                        console.log("Error token PUE: statusCode!= 200, status =  ", res.statusCode)
+                        reject();
+                    }
+                    let info = JSON.parse(body);
+                    resolve({
+                        "token": info.access_token
+                    })
+                }
+            });
+        }
+    );
+};
+
+function getDataPrevio(token, req) {
+    let options = {
+        method: 'POST',
+        url: process.env.ENDPOINT_PUE_SERVIDORESSANCIONADOS,
+        json: true,
+        qs:
+            {
+                access_token: token
+            },
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        body: {
+            page: 1,
+            pageSize: 1,
+            query: fnct.getBodySS(req.body.filtros)
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        request(options, function (error, res, body) {
+            if (error) {
+                console.log("Error PUE(getDataPrevio): ", error)
+                reject(error)
+            }
+            ;
+            if (body) {
+                if (res.statusCode !== 200) {
+                    console.log("Error PUE(getDataPrevio): statusCode!= 200 ")
+                    reject();
+                } else {
+                    let info = body;
+                    resolve({
+                        sujeto_obligado: "Puebla",
+                        estatus: true,
+                        totalRows: info.pagination.totalRows,
+                        clave_api: "pue",
+                        nivel: "Estatal"
+                    })
+
+                }
+            }
+
+        });
+    });
+};
+
+function getData(token, req) {
+    let options = {
+        method: 'POST',
+        url: process.env.ENDPOINT_PUE_SERVIDORESSANCIONADOS,
+        json: true,
+        qs:
+            {
+                access_token: token
+            },
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        body: {
+            page: req.body.offset > 0 ? ((req.body.offset / req.body.limit) + 1) : 1,
+            pageSize: req.body.limit,
+            query: fnct.getBodySS(req.body.filtros)
+
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        request(options, function (error, res, body) {
+            if (error) {
+                console.log("Error PUE(getData): ", error);
+                reject(error)
+            }
+            ;
+            if (body) {
+                if (res.statusCode !== 200) {
+                    console.log("Error PUE(getData): statusCode!= 200");
+                    reject();
+                } else {
+                    let info = body;
+                    resolve({
+                        results: info.results,
+                        totalRows: info.pagination.totalRows
+                    })
+
+                }
+            }
+
+        });
+
+    });
+}
+
+function getDependencias(token) {
+    let options = {
+        method: 'GET',
+        url: process.env.ENDPOINT_PUE_SERVIDORESSANCIONADOS_DEPENDENCIAS,
+        qs:
+            {
+                access_token: token
+            },
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        json: true
+    };
+
+    return new Promise((resolve, reject) => {
+        request(options, function (error, res, body) {
+            if (error) {
+                console.log("Error PUE(getDependencias): ", error)
+                reject()
+            }
+            ;
+            if (body) {
+                let code = res.statusCode;
+                if (code !== 200) {
+                    console.log("Error PUE(getDependencias): statusCode != 200 ")
+                    reject()
+                }
+                //Revisar
+                let dataAux = body.dependencias.map(item => {
+                    return item.nombre
+                });
+                resolve({
+                    instituciones: dataAux,
+                })
+
+            }
+        });
+
+    });
+}
+
+exports.getServidoresSancionados = function (req, response) {
+    return new Promise((resolve, reject) => {
+        getToken().then(res => {
+            let token = res.token;
+            getData(token, req).then(resultado => {
+                let datosMapeados = resultado.results.map(item => {
+                    return fnct.createDataServidoresSanciondos(item, 'Puebla');
+                });
+                resolve(
+                    {
+                        "data": datosMapeados,
+                        "totalRows": resultado.totalRows
+                    })
+            }).catch(error => {
+                reject(error)
+            });
+
+        }).catch(err => {
+            reject(err)
+        });
+    });
+}
+
+exports.getPrevioServidoresSancionados = function (req) {
+    return new Promise((resolve, reject) => {
+        getToken().then(res => {
+            getDataPrevio(res.token, req).then(resultado => {
+                resolve(
+                    resultado
+                )
+            }).catch(error => {
+                resolve({
+                    sujeto_obligado: "Puebla",
+                    estatus: false,
+                    totalRows: 0,
+                    clave_api: "pue",
+                    nivel: "Estatal"
+                })
+            });
+
+        }).catch(error => {
+            resolve({
+                sujeto_obligado: "Puebla",
+                estatus: false,
+                totalRows: 0,
+                clave_api: "pue",
+                nivel: "Estatal"
+            })
+        });
+    });
+};
+
+exports.getDependenciasServidoresSancionados = function ( ) {
+    return new Promise((resolve, reject) => {
+        getToken().then(res => {
+            getDependencias(res.token).then(resultado => {
+                resolve(
+                    {
+                        "data": resultado.instituciones
+                    })
+            }).catch(error => {
+                resolve({
+                    "data": []
+                })
+            });
+        }).catch(err => {
+            resolve({
+                data: []
+            })
+        });
+    });
+}

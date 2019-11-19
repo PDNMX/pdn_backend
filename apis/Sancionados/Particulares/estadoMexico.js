@@ -6,7 +6,7 @@ let counter = 0;
 
 let createDataEM = (item) => {
     counter += 1;
-    let leyenda = "NO EXISTE DATO EN LA BASE DEL ESTADO DE MÉXICO";
+    let leyenda = "No existe dato en la base del Estado de México";
     return{
         id: counter,
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,

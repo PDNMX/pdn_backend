@@ -6,7 +6,7 @@ var Promise = require("bluebird");
 
 let em = require('./estadoMexico');
 let sfp = require('./sfp');
-
+let pue = require('./puebla');
 /*
 NO DEBE REGRESAR ERRORES, EN CASO DE ERROR DEBE DEVOLVER A INF DEL API QUE ESTA FALLANDO
  */
@@ -19,9 +19,11 @@ router.post('/apis/s2/getPrevio',cors(),(req,response) => {
            getDataPromisses.push(sfp.getPrevioServidoresIntervienen(req));
            break;
        case "estatal":
+           //getDataPromisses.push(em.getPrevioServidoresIntervienen(req),pue.getPrevioServidoresIntervienen(req));
            getDataPromisses.push(em.getPrevioServidoresIntervienen(req));
            break;
        default :
+           //getDataPromisses.push(sfp.getPrevioServidoresIntervienen(req),em.getPrevioServidoresIntervienen(req), pue.getPrevioServidoresIntervienen(req));
            getDataPromisses.push(sfp.getPrevioServidoresIntervienen(req),em.getPrevioServidoresIntervienen(req));
            break;
    }
@@ -46,6 +48,8 @@ router.post('/apis/s2',cors(),(req,response)=>{
         case "sfp":
             getDataPromisses.push(sfp.getServidoresIntervienen(req));
             break;
+        case "pue":
+            getDataPromisses.push(pue.getServidoresIntervienen(req))
     }
 
     Promise.all(getDataPromisses).then(function (res) {
@@ -74,10 +78,12 @@ router.post('/apis/s2/dependencias', cors(), (req, response) => {
             getDataPromisses.push(sfp.getDependencias(req));
             break;
         case "estatal":
+            //getDataPromisses.push(em.getDependenciasS2(req), pue.getDependenciasS2());
             getDataPromisses.push(em.getDependenciasS2(req));
             break;
         default :
-            getDataPromisses.push(em.getDependenciasS2(req),sfp.getDependencias(req) );
+            //getDataPromisses.push(em.getDependenciasS2(req),sfp.getDependencias(req), pue.getDependenciasS2());
+            getDataPromisses.push(em.getDependenciasS2(req),sfp.getDependencias(req));
             break;
     }
 

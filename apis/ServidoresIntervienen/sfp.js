@@ -19,26 +19,26 @@ const client = new ApolloClient({
 let counter = 0;
 
 let createData = (item) => {
-    let leyenda = "NO EXISTE DATO EN LA BASE DE DATOS RENIRESP";
+    let leyenda = "No existe dato en la base de datos RENIRESP";
     let tipoArea = item.tipo_area.map(item => {
         switch (item) {
             case 'T':
-                return 'TÉCNICA';
+                return 'Técnica';
                 break;
             case 'RE' :
-                return 'RESPONSABLE DE LA EJECUCIÓN DE LOS TRABAJOS';
+                return 'Responsable de la ejecución de los trabajos';
                 break;
             case 'RC' :
-                return 'RESPONSABLE DE LA CONTRATACIÓN';
+                return 'Responsable de la contratación';
                 break;
             case 'O' :
-                return 'OTRA';
+                return 'Otra';
                 break;
             case 'C' :
-                return 'CONTRATANTE';
+                return 'Contratante';
                 break;
             case 'R' :
-                return 'REQUIRENTE';
+                return 'Requirente';
                 break;
             default :
                 return leyenda;
@@ -53,7 +53,7 @@ let createData = (item) => {
         item.area_otra === 1 ? "OTRA" : "";
     */
 
-    let nivel = item.nivel_responsabilidad === 'A' ? "ATENCIÓN" : item.nivel_responsabilidad === 'R' ? "RESOLUCIÓN" : "TRAMITACIÓN";
+    let nivel = item.nivel_responsabilidad === 'A' ? "Atención" : item.nivel_responsabilidad === 'R' ? "Resolución" : "Tramitación";
     counter += 1;
     // fix a nombres de SFP
     let nombreCompleto = ''
@@ -77,10 +77,10 @@ let createData = (item) => {
             nivel: item.puesto && item.puesto.nivel ? item.puesto.nivel : leyenda
         },
         tipoArea: tipoArea.length > 0 ? tipoArea : leyenda,
-        contrataciones: item.tipo_procedimiento === 1 ? nivel : "NO APLICA",
-        concesionesLicencias: item.tipo_procedimiento === 2 ? nivel : "NO APLICA",
-        enajenacion: item.tipo_procedimiento === 3 ? nivel : "NO APLICA",
-        dictamenes: item.tipo_procedimiento === 4 ? nivel : "NO APLICA",
+        contrataciones: item.tipo_procedimiento === 1 ? nivel : "No aplica",
+        concesionesLicencias: item.tipo_procedimiento === 2 ? nivel : "No aplica",
+        enajenacion: item.tipo_procedimiento === 3 ? nivel : "No aplica",
+        dictamenes: item.tipo_procedimiento === 4 ? nivel : "No aplica",
         fecha_captura: item.fecha_captura ? item.fecha_captura : leyenda,
         ejercicio_fiscal: item.ejercicio_fiscal ? item.ejercicio_fiscal : leyenda,
         periodo_ejercicio: {
