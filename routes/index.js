@@ -1,5 +1,5 @@
 var express = require('express');
-var uuidv1 = require('uuid/v1');
+var uuidv1 = require('uuid');
 var router = express.Router();
 var cors = require('cors');
 var fs = require('fs');
